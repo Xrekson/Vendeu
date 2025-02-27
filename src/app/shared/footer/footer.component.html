@@ -1,0 +1,13 @@
+<p-toolbar [style]="{ 'border-radius': '1.5rem', 'margin': '1rem 1rem 1rem 1.5rem' }">
+    <ng-template #start>
+        <div class="flex items-center gap-2">
+        </div>
+    </ng-template>
+    
+    <ng-template #end>
+        <div class="flex items-center gap-2">
+            <fa-icon [icon]="['fas','copyright']" [size]="'xl'"/>
+            <p-button [label]="date.getFullYear()+''" [size]="'small'"></p-button>
+        </div>
+    </ng-template>
+</p-toolbar>
