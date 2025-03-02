@@ -1,1 +1,50 @@
-<h1>REGI</h1>
+<div class="my-auto mx-5 sm:mx-50 p-5">
+    <div class="text-center m-12">
+        <h1>Login</h1>
+    </div>
+    <form [formGroup]="actorForm">
+        <div class="grid grid-cols-12 gap-10">
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                    <p-floatlabel>
+                        <input id="username" pInputText formControlName="username" />
+                        <label for="username"> <fa-icon [icon]="['fas','user']" /> Username</label>
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                    <p-floatlabel>
+                        <input id="name" pInputText formControlName="name" />
+                        <label for="name"><fa-icon [icon]="['far','user']" /> Name</label>
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                    <p-floatlabel>
+                        <p-password class="w-full" [inputStyle]="{'width': '100%'}" [style]="{'width': '100%'}"  id="password" formControlName="password" [feedback]="false" />
+                        <label for="password"><fa-icon [icon]="['fas','lock']" /> Password</label>
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                    <p-floatlabel>
+                        <textarea id="about" class="w-full" pTextarea formControlName="about" ></textarea>
+                        <label for="about"><fa-icon [icon]="['fas','comment']" /> About</label>
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                    <p-floatlabel>
+                        <p-datepicker class="w-full" [readonlyInput]="true" [inputStyle]="{'width': '100%'}" [style]="{'width': '100%'}"  formControlName="dob" [showIcon]="true" id="dob" inputId="buttondisplay"
+                            [showOnFocus]="false" />
+                        <label for="about"><fa-icon [icon]="['fas','calendar-days']" /> Date of Birth</label>
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+        </div>
+    </form>
+</div>

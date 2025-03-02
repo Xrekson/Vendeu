@@ -3,12 +3,17 @@
         <div class="flex items-center gap-2">
             <p-button label="Home" text plain />
             <p-button label="Edit" text plain />
-            <p-button label="View" text plain />
         </div>
     </ng-template>
-
+    
     <ng-template #end>
         <div class="flex items-center gap-2">
+            <a [routerLink]="'login'" class="p-button font-bold">
+                Login
+            </a>
+            <a [routerLink]="'register'"  class="p-button font-bold">
+                Register
+            </a>
         </div>
     </ng-template>
 </p-toolbar>
