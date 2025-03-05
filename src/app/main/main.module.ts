@@ -16,8 +16,14 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
+import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FileUploadModule } from 'primeng/fileupload';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
 
 @NgModule({
   declarations: [HomeComponent,RegisterComponent],
@@ -35,9 +41,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     PasswordModule,
     InputTextModule,
     TextareaModule,
+    SelectModule,
+    InputNumberModule,
+    FileUploadModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule
-]
+],providers:[AuthService]
 })
 export class MainModule { }

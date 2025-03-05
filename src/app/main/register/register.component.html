@@ -2,11 +2,11 @@
     <div class="text-center m-12">
         <h1>Login</h1>
     </div>
-    <form [formGroup]="actorForm">
+    <form [formGroup]="actorForm" (submit)="submitForm()">
         <div class="grid grid-cols-12 gap-10">
             <div class="col-span-12 sm:col-span-6">
                 <p-inputgroup>
-                    <p-floatlabel>
+                    <p-floatlabel variant="on">
                         <input id="username" pInputText formControlName="username" />
                         <label for="username"> <fa-icon [icon]="['fas','user']" /> Username</label>
                     </p-floatlabel>
@@ -14,7 +14,7 @@
             </div>
             <div class="col-span-12 sm:col-span-6">
                 <p-inputgroup>
-                    <p-floatlabel>
+                    <p-floatlabel variant="on">
                         <input id="name" pInputText formControlName="name" />
                         <label for="name"><fa-icon [icon]="['far','user']" /> Name</label>
                     </p-floatlabel>
@@ -23,15 +23,32 @@
             <div class="col-span-12 sm:col-span-6">
                 <p-inputgroup>
                     <p-floatlabel>
-                        <p-password class="w-full" [inputStyle]="{'width': '100%'}" [style]="{'width': '100%'}"  id="password" formControlName="password" [feedback]="false" />
+                        <p-password class="w-full" [inputStyle]="{'width': '100%'}" [style]="{'width': '100%'}"
+                            id="password" formControlName="password" [feedback]="false" />
                         <label for="password"><fa-icon [icon]="['fas','lock']" /> Password</label>
                     </p-floatlabel>
                 </p-inputgroup>
             </div>
             <div class="col-span-12 sm:col-span-6">
                 <p-inputgroup>
-                    <p-floatlabel>
-                        <textarea id="about" class="w-full" pTextarea formControlName="about" ></textarea>
+                    <p-floatlabel variant="on">
+                        <input id="email" pInputText formControlName="email" />
+                        <label for="email"><fa-icon [icon]="['fas','at']" />Email</label>
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                    <p-floatlabel variant="on">
+                        <p-inputnumber inputId="integeronly" formControlName="mobileno" id="number" />
+                        <label for="number"><fa-icon [icon]="['fas','mobile']" />Mobile</label>
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                    <p-floatlabel variant="on">
+                        <textarea id="about" class="w-full" pTextarea formControlName="about"></textarea>
                         <label for="about"><fa-icon [icon]="['fas','comment']" /> About</label>
                     </p-floatlabel>
                 </p-inputgroup>
@@ -39,12 +56,40 @@
             <div class="col-span-12 sm:col-span-6">
                 <p-inputgroup>
                     <p-floatlabel>
-                        <p-datepicker class="w-full" [readonlyInput]="true" [inputStyle]="{'width': '100%'}" [style]="{'width': '100%'}"  formControlName="dob" [showIcon]="true" id="dob" inputId="buttondisplay"
-                            [showOnFocus]="false" />
+                        <p-datepicker class="w-full" [readonlyInput]="true" [inputStyle]="{'width': '100%'}"
+                            [style]="{'width': '100%'}" formControlName="dob" [dateFormat]="''" [showIcon]="true" id="dob"
+                            inputId="buttondisplay" [showOnFocus]="false" />
                         <label for="about"><fa-icon [icon]="['fas','calendar-days']" /> Date of Birth</label>
                     </p-floatlabel>
                 </p-inputgroup>
             </div>
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                    <p-floatlabel variant="in">
+                        <p-select id="pos" [options]="userType" optionLabel="name" placeholder="User Type"
+                            class="w-full md:w-56" formControlName="type" />
+                        <label for="pos"><fa-icon [icon]="['fas','person']" />User Type</label>
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                    <p-floatlabel variant="on">
+                        <input id="deg" pInputText formControlName="deg" />
+                        <label for="deg"><fa-icon [icon]="['fas','person']" />Position</label>
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                        <p-fileupload #fu mode="basic" chooseLabel="Choose Profile Pic" chooseIcon="pi pi-upload" accept="image/*" maxFileSize="1000000"
+                            (onSelect)="onUpload($event)" (onClear)="clear()"/>
+                        <p-button *ngIf="actorForm.value.file" label="Clear" (onClick)="fu.clear()" severity="secondary" />
+                </p-inputgroup>
+            </div>
+        </div>
+        <div class="flex flex-col ">
+            <p-button class="mx-auto my-5" size="large" [label]="'Register'" [type]="'submit'"></p-button>
         </div>
     </form>
 </div>
