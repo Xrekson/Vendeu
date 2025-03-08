@@ -1,0 +1,17 @@
+<div class="my-auto mx-5 sm:mx-50 p-5">
+    <div class="text-center m-12">
+        <h1>Login</h1>
+    </div>
+    <form [formGroup]="actorForm" (submit)="submitForm()">
+        <div class="grid grid-cols-12 gap-10">
+            <div class="col-span-12 sm:col-span-6">
+                <p-inputgroup>
+                    <p-floatlabel variant="on">
+                        <input id="username" pInputText formControlName="username" />
+                        <label for="username"> <fa-icon [icon]="['fas','user']" /> Username</label>
+                    </p-floatlabel>
+                </p-inputgroup>
+            </div>
+        </div>
+    </form>
+</div>

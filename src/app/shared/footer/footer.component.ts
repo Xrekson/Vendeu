@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ToolbarModule } from 'primeng/toolbar';
@@ -12,20 +12,20 @@ import { AvatarModule } from 'primeng/avatar'
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit{
   date: Date = new Date();
-  isScrolled: boolean = false;
+  isScrolled = false;
   ngOnInit() {
     this.checkScrollPosition();
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
+  onResize() {
     this.checkScrollPosition();
   }
 
   @HostListener('window:scroll', ['$event'])
-  onScroll(event: Event) {
+  onScroll() {
     this.checkScrollPosition();
   }
 

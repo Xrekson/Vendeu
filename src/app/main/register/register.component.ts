@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { FileUploadEvent, FileUploadHandlerEvent } from 'primeng/fileupload';
+import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterComponent {
   actorForm: FormGroup;
-  userType: Array<any> = [{name:'Buyer',code:'BUY'},{name:'Seller',code:'SEL'}];
+  userType: object[] = [{name:'Buyer',code:'BUY'},{name:'Seller',code:'SEL'}];
   constructor(private authServ:AuthService){
     this.actorForm = new FormGroup({
       dob: new FormControl('', [
@@ -21,7 +21,7 @@ export class RegisterComponent {
       email: new FormControl('',[Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]),
       mobileno: new FormControl(0, [Validators.required,Validators.minLength(10),Validators.maxLength(10)]),
       username: new FormControl('', [Validators.required,Validators.maxLength(100),Validators.minLength(5)]),
-      password: new FormControl('', [Validators.required,Validators.maxLength(100),Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|-]).{4,}(?=\D*\d.*\d.*\d).*/)]),
+      password: new FormControl('', [Validators.required,Validators.maxLength(100),Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+={}\]:;"'<>,.?/\\|-]).{4,}(?=\D*\d.*\d.*\d).*/)]),
       type: new FormControl('', Validators.required),
       deg: new FormControl('', Validators.required,),
       about: new FormControl('', [Validators.required,Validators.maxLength(255)]),
@@ -31,7 +31,7 @@ export class RegisterComponent {
 
   }
   submitForm(){
-    let data = this.actorForm.value;
+    const data = this.actorForm.value;
     console.log(data);
     data.dob = data.dob.toISOString();
     data.type = data.type.code;

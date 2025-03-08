@@ -12,7 +12,7 @@ export class AuthService {
     this.registerUrl = environment.baseUrl+ '/user/save';
    }
 
-  register(data:any): Observable<any>{
+  register(data:object): Observable<object>{
     return this.http.post(this.registerUrl,data);
   }
 }

@@ -22,11 +22,11 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { FileUploadModule } from 'primeng/fileupload';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
-  declarations: [HomeComponent,RegisterComponent],
+  declarations: [HomeComponent,RegisterComponent,LoginComponent],
   imports: [
     CommonModule,
     MainRoutingModule,

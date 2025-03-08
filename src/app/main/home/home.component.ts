@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CarouselResponsiveOptions } from 'primeng/carousel';
 
 
 @Component({
@@ -8,28 +9,28 @@ import { Component } from '@angular/core';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  products:Array<any> = [];
-  responsiveOptions:Array<any> = [];
+  products: object[] = [];
+  responsiveOptions: CarouselResponsiveOptions[] = [];
 
   constructor(){
     this.responsiveOptions = [
       {
-          breakpoint: '1400px',
+          breakpoint: '1440px',
           numVisible: 4,
           numScroll: 1
       },
       {
-          breakpoint: '1199px',
+          breakpoint: '1080px',
           numVisible: 3,
           numScroll: 1
       },
       {
-          breakpoint: '767px',
+          breakpoint: '768px',
           numVisible: 2,
           numScroll: 1
       },
       {
-          breakpoint: '575px',
+          breakpoint: '640px',
           numVisible: 1,
           numScroll: 1
       }
