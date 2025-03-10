@@ -8,11 +8,17 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
   private registerUrl:string;
+  private loginUrl:string;
+
   constructor(private http:HttpClient) {
-    this.registerUrl = environment.baseUrl+ '/user/save';
+    this.registerUrl = environment.baseUrl+ '/register';
+    this.loginUrl = environment.baseUrl+ '/login';
    }
 
   register(data:object): Observable<object>{
     return this.http.post(this.registerUrl,data);
+  }
+  login(data:object): Observable<object>{
+    return this.http.post(this.loginUrl,data);
   }
 }

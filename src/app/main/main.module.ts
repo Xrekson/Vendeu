@@ -25,6 +25,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService } from '../services/auth.service';
 import { LoginComponent } from './login/login.component';
 
+import { sessionReducer } from '../services/Store/session.reducer';
+import { collectionReducer } from '../services/Store/sessionStore.reducer';
+import { StoreModule } from '@ngrx/store';
+
 @NgModule({
   declarations: [HomeComponent,RegisterComponent,LoginComponent],
   imports: [
@@ -46,7 +50,8 @@ import { LoginComponent } from './login/login.component';
     FileUploadModule,
     FontAwesomeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forFeature( "session", collectionReducer ),
 ],providers:[AuthService]
 })
 export class MainModule { }

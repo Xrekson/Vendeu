@@ -24,7 +24,7 @@ export class LoginComponent {
       Object.keys(data).map((datax)=>{
           form.append(datax,data[datax]);
       })
-      this.authServ.register(form).subscribe({
+      this.authServ.login(form).subscribe({
         next: (res)=>{
           console.log(res);
         },error : (err)=>{
