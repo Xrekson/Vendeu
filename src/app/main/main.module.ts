@@ -24,9 +24,6 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService } from '../services/auth.service';
 import { LoginComponent } from './login/login.component';
-
-import { sessionReducer } from '../services/Store/session.reducer';
-import { collectionReducer } from '../services/Store/sessionStore.reducer';
 import { StoreModule } from '@ngrx/store';
 
 @NgModule({
@@ -51,7 +48,7 @@ import { StoreModule } from '@ngrx/store';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forFeature( "session", collectionReducer ),
+    StoreModule
 ],providers:[AuthService]
 })
 export class MainModule { }
