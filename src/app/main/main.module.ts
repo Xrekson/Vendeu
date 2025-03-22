@@ -24,6 +24,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService } from '../services/auth.service';
 import { LoginComponent } from './login/login.component';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [HomeComponent,RegisterComponent,LoginComponent],
@@ -46,7 +47,8 @@ import { LoginComponent } from './login/login.component';
     FileUploadModule,
     FontAwesomeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule
 ],providers:[AuthService]
 })
 export class MainModule { }

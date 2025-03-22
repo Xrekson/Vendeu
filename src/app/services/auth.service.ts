@@ -7,23 +7,13 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private registerUrl: string;
-  public userData: BehaviorSubject<{
-    id: string,
-    token: string,
-    username: string
-  }> = new BehaviorSubject({
-    id: "",
-    token: "",
-    username: ""
-  });
+  private registerUrl:string;
+  private loginUrl:string;
 
-  public getUser: Observable<any>;
-
-  constructor(private http: HttpClient) {
-    this.getUser = this.userData.asObservable();
-    this.registerUrl = environment.baseUrl + '/login';
-  }
+  constructor(private http:HttpClient) {
+    this.registerUrl = environment.baseUrl+ '/register';
+    this.loginUrl = environment.baseUrl+ '/login';
+   }
 
   register(data: object): Observable<object> {
     return this.http.post(this.registerUrl, data);
@@ -34,5 +24,11 @@ export class AuthService {
     username: string
   }) {
     this.userData.next(data);
+  }
+  login(data:object): Observable<object>{
+    return this.http.post(this.loginUrl,data);
+  }
+  login(data:object): Observable<object>{
+    return this.http.post(this.loginUrl,data);
   }
 }
