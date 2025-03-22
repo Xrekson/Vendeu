@@ -30,6 +30,7 @@
     "@ngrx-addons/persist-state": "^8.0.1",
     "@ngrx/store": "^19.0.1",
     "@primeng/themes": "^19.0.7",
+    "@stomp/rx-stomp": "^2.0.1",
     "@tailwindcss/postcss": "^4.0.8",
     "postcss": "^8.5.3",
     "primeicons": "^7.0.0",

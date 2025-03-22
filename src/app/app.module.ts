@@ -10,10 +10,11 @@ import { RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FooterComponent } from './shared/footer/footer.component';
 import { TopBarComponent } from './shared/top-bar/top-bar.component';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import nora from '@primeng/themes/nora';
 import { providePrimeNG } from 'primeng/config';
+import { AuthInterceptor } from './services/interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { providePrimeNG } from 'primeng/config';
         }
       ]
     })
+
   ],
   providers: [
     provideHttpClient(withFetch()),
@@ -45,7 +47,12 @@ import { providePrimeNG } from 'primeng/config';
       theme: {
         preset: nora,
       },
-    })
+    }),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
