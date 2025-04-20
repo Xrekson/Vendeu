@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { Store } from '@ngrx/store';
 import { Session } from '../../services/Store/session.model';
 import { updateSession } from '../../services/Store/session.actions';

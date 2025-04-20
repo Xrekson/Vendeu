@@ -15,6 +15,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import nora from '@primeng/themes/nora';
 import { providePrimeNG } from 'primeng/config';
 import { AuthInterceptor } from './services/interceptor/auth.interceptor';
+import { WebsocketService } from './services/websocket/websocket.service';
+import { rxStompClientFactory } from './services/websocket/rx-stomp-client-factory';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,10 @@ import { AuthInterceptor } from './services/interceptor/auth.interceptor';
         preset: nora,
       },
     }),
+    {
+      provide: WebsocketService,
+      useFactory: rxStompClientFactory
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

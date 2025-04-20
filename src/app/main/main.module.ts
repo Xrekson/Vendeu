@@ -22,12 +22,14 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { FileUploadModule } from 'primeng/fileupload';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/auth/auth.service';
 import { LoginComponent } from './login/login.component';
 import { StoreModule } from '@ngrx/store';
+import { BidComponent } from './bid/bid.component';
+import { BiddingMsgComponent } from '../shared/bidding-msg/bidding-msg.component';
 
 @NgModule({
-  declarations: [HomeComponent,RegisterComponent,LoginComponent],
+  declarations: [HomeComponent,RegisterComponent,LoginComponent,BidComponent],
   imports: [
     CommonModule,
     MainRoutingModule,
@@ -48,7 +50,8 @@ import { StoreModule } from '@ngrx/store';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule
+    StoreModule,
+    BiddingMsgComponent
 ],providers:[AuthService]
 })
 export class MainModule { }
