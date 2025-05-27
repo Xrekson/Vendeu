@@ -26,7 +26,7 @@ export class RegisterComponent {
       deg: new FormControl('', Validators.required,),
       about: new FormControl('', [Validators.required,Validators.maxLength(255)]),
       name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      file: new FormControl(null)
+      // file: new FormControl(null)
     });
 
   }
@@ -35,14 +35,14 @@ export class RegisterComponent {
     console.log(data);
     data.dob = data.dob.toISOString();
     data.type = data.type.code;
-    const form = new FormData();
-    Object.keys(data).map((datax)=>{
-      if(datax!='file'){
-        form.append(datax,data[datax]);
-      }
-    })
-    form.append('file',data.file);
-    this.authServ.register(form).subscribe({
+    // const form = new FormData();
+    // Object.keys(data).map((datax)=>{
+    //   if(datax!='file'){
+    //     form.append(datax,data[datax]);
+    //   }
+    // })
+    // form.append('file',data.file);
+    this.authServ.register(data).subscribe({
       next: (res)=>{
         console.log(res);
       },error : (err)=>{

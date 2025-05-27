@@ -80,13 +80,6 @@
                     </p-floatlabel>
                 </p-inputgroup>
             </div>
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                        <p-fileupload #fu mode="basic" chooseLabel="Choose Profile Pic" chooseIcon="pi pi-upload" accept="image/*" maxFileSize="1000000"
-                            (onSelect)="onUpload($event)" (onClear)="clear()"/>
-                        <p-button *ngIf="actorForm.value.file" label="Clear" (onClick)="fu.clear()" severity="secondary" />
-                </p-inputgroup>
-            </div>
         </div>
         <div class="flex flex-col ">
             <p-button class="mx-auto my-5" size="large" [label]="'Register'" [type]="'submit'"></p-button>

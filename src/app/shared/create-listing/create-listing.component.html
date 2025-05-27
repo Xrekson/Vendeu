@@ -1,0 +1,209 @@
+<div class="fluid grid justify-center">
+  <div class="col-12 md-8 text-center row" >
+    <form [formGroup]="listingForm" (ngSubmit)="submit()" class="p-card p-4">
+      <h2 class="text-center mb-3">Create Listing</h2>
+
+      <!-- Name Field -->
+       
+      <div class="p-field mb-3 d-flex flex-column">
+        <label for="name">Listing Name</label>
+        <input 
+          id="name" 
+          type="text" 
+          pInputText 
+          formControlName="name"
+          placeholder="Enter listing name">
+        <p *ngIf="listingForm.get('name')?.invalid && listingForm.get('name')?.touched" class="p-error">
+          Name is required
+        </p>
+      </div>
+
+      <!-- Main Image Field (img array) -->
+      <!-- <div class="p-field mb-3 d-flex flex-column">
+        <label>Main Image URL</label>
+        <div formArrayName="img">
+          <div *ngFor="let imgControl of img.controls; let i = index" class="p-grid p-align-center p-mb-2">
+            <div class="p-col">
+              <input 
+                type="text" 
+                pInputText 
+                [formControlName]="i"
+                placeholder="Enter image URL">
+            </div>
+            <div class="p-col-fixed">
+              <button 
+                type="button" 
+                pButton 
+                icon="pi pi-times" 
+                class="p-button-danger" 
+                (click)="img.removeAt(i)"
+                *ngIf="img.length > 1"></button>
+            </div>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          pButton 
+          icon="pi pi-plus" 
+          label="Add Image" 
+          class="p-button-secondary p-button-sm"
+          (click)="addImageField('img')"></button>
+      </div> -->
+
+      <!-- Additional Images Field (images array) -->
+      <div class="p-field mb-3 d-flex flex-column">
+        <label>Image URLs</label>
+        <div formArrayName="images">
+          <div *ngFor="let imageControl of images.controls; let i = index" class="p-grid p-align-center p-mb-2">
+            <div class="p-col">
+              <input 
+                type="text" 
+                pInputText 
+                [formControlName]="i"
+                placeholder="Enter image URL">
+            </div>
+            <div class="p-col-fixed">
+              <button 
+                type="button" 
+                pButton 
+                icon="pi pi-times" 
+                class="p-button-danger" 
+                (click)="images.removeAt(i)"
+                *ngIf="images.length > 1"></button>
+            </div>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          pButton 
+          icon="pi pi-plus" 
+          label="Add Image" 
+          class="p-button-secondary p-button-sm"
+          (click)="addImageField('images')"></button>
+      </div>
+
+      <!-- Price Field -->
+      <div class="p-field mb-3 d-flex flex-column">
+        <label for="price">Price</label>
+        <!-- [min]="0" -->
+        <p-inputNumber 
+          id="price" 
+          formControlName="price" 
+          mode="currency" 
+          currency="USD"
+          placeholder="Enter price">
+        </p-inputNumber>
+        <p *ngIf="listingForm.get('price')?.invalid" class="p-error">
+          Valid price is required
+        </p>
+      </div>
+
+      <!-- Detail Field -->
+      <div class="p-field mb-3 d-flex flex-column">
+        <label for="detail">Description</label>
+        <textarea 
+          id="detail" 
+          rows="5" 
+          pInputTextarea 
+          formControlName="detail"
+          placeholder="Enter listing description">
+        </textarea>
+        <p *ngIf="listingForm.get('detail')?.invalid && listingForm.get('detail')?.touched" class="p-error">
+          Description is required
+        </p>
+      </div>
+
+      <!-- Category Fields -->
+      <!-- <div formGroupName="category" class="p-card p-fluid mb-3">
+        <h3 class="p-card-title">Category</h3>
+        <div class="p-field d-flex flex-column">
+          <label for="categoryId">Category ID</label>
+          <input 
+            id="categoryId" 
+            type="text" 
+            pInputText 
+            formControlName="id"
+            placeholder="Enter category ID">
+        </div>
+        <div class="p-field d-flex flex-column">
+          <label for="categoryName">Category Name</label>
+          <input 
+            id="categoryName" 
+            type="text" 
+            pInputText 
+            formControlName="name"
+            placeholder="Enter category name">
+        </div>
+      </div> -->
+
+      <!-- Price Interval Field -->
+      <div class="p-field mb-3 d-flex flex-column">
+        <label for="priceInterval">Price Interval</label>
+        <p-inputNumber 
+          id="priceInterval" 
+          formControlName="priceInterval" 
+          mode="currency" 
+          currency="USD"
+          placeholder="Enter price interval">
+        </p-inputNumber>
+        <!-- [min]="0" -->
+      </div>
+
+      <!-- Auction Dates -->
+      <div class="p-grid mb-3 d-flex flex-column">
+        <div class="p-field p-col">
+          <label for="auction_start">Auction Start Date</label>
+          <!-- [showTime]="true" -->
+          <p-datepicker  
+            id="auction_start" 
+            formControlName="auction_start" 
+            [required]="true"
+            dateFormat="yy-mm-dd"
+            placeholder="Select start date">
+          </p-datepicker >
+          <p *ngIf="listingForm.get('auction_start')?.invalid && listingForm.get('auction_start')?.touched" class="p-error">
+            Start date is required
+          </p>
+        </div>
+        <div class="p-field p-col">
+          <label for="auction_end">Auction End Date</label>
+          <!-- [showTime]="true" -->
+          <p-datepicker 
+            id="auction_end" 
+            formControlName="auction_end" 
+            [required]="true"
+            dateFormat="yy-mm-dd"
+            placeholder="Select end date">
+          </p-datepicker>
+          <p *ngIf="listingForm.get('auction_end')?.invalid && listingForm.get('auction_end')?.touched" class="p-error">
+            End date is required
+          </p>
+        </div>
+      </div>
+
+      <!-- Highest Bid Field -->
+      <div class="p-field mb-4 d-flex flex-column">
+        <label for="highestbid">Highest Bid</label>
+        <p-inputNumber 
+          id="highestbid" 
+          formControlName="highestbid" 
+          mode="currency" 
+          currency="USD"
+          placeholder="Enter highest bid">
+        </p-inputNumber>
+        <!-- [min]="0" -->
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-flex flex-column">
+        <button 
+          type="submit" 
+          pButton 
+          label="Submit" 
+          icon="pi pi-check"
+          [disabled]="!listingForm.valid"
+          class="p-button-lg"></button>
+      </div>
+    </form>
+  </div>
+</div>

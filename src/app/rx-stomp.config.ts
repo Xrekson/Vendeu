@@ -11,8 +11,8 @@ export const myRxStompConfig: RxStompConfig = {
   //   login: 'guest',
   //   passcode: 'guest',
   // },
-  webSocketFactory: () => {
-    return new SockJS('http://localhost:19090/websoc');
+  webSocketFactory() {
+      return new SockJS("http://localhost:19090/websoc");
   },
 
   heartbeatIncoming: 20000, // Typical value 0 - disabled
@@ -23,4 +23,18 @@ export const myRxStompConfig: RxStompConfig = {
   debug: (msg: string): void => {
     console.log(new Date().toISOString(), msg);
   },
+  // beforeConnect(client) : Promise<void> {
+  //   return new Promise<void>((resolve, reject) => {
+  //     const sessionData = localStorage.getItem("session@store");
+  //     if(sessionData){
+  //       const token = JSON.parse(sessionData).token;
+  //       console.log("Tokeeeeeeeeeeeeeeeeeeeeeeeeeeen:",token);
+  //       client.configure({ connectHeaders : {
+  //         Authorization: 'Bearer ' + token
+  //       } })
+  //       resolve();
+  //     }
+  //     reject();
+  //   });
+  // },
 };

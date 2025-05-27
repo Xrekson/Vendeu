@@ -7,6 +7,7 @@ import { updateSession } from '../../services/Store/session.actions';
 import { Observable } from 'rxjs';
 import { selectMAIN } from '../../services/Store/session.selectors';
 import { AppState } from '../../services/Store/app.store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent {
   actorForm: FormGroup;
   data$ : Observable<Session>;
 
-  constructor(private authServ:AuthService,private store: Store<AppState>){
+  constructor(private authServ:AuthService,private store: Store<AppState>, private route:Router){
       this.actorForm = new FormGroup({
         username: new FormControl('', [Validators.required,Validators.maxLength(100),Validators.minLength(5)]),
         password: new FormControl('', [Validators.required,Validators.maxLength(100),Validators.pattern(/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+={}\]:;"'<>,.?/\\|-]).{4,}(?=\D*\d.*\d.*\d).*/)]),
@@ -41,10 +42,12 @@ export class LoginComponent {
             let sessionData:Session = {
               id:data.id,
               token:data.token,
-              username:data.username
+              username:data.username,
+              type: data.type
             };
             // console.log(sessionData);
             this.store.dispatch(updateSession({session:sessionData}));
+            this.route.navigate(['dash']);
           }
         },error : (err)=>{
           console.log(err);

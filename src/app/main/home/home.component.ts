@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
 import { CarouselResponsiveOptions } from 'primeng/carousel';
+import { AppState } from '../../services/Store/app.store';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Session } from '../../services/Store/session.model';
+import { selectMAIN } from '../../services/Store/session.selectors';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,8 +17,16 @@ import { CarouselResponsiveOptions } from 'primeng/carousel';
 export class HomeComponent {
   products: object[] = [];
   responsiveOptions: CarouselResponsiveOptions[] = [];
+  data$ : Observable<Session>;
 
-  constructor(){
+  constructor(private store: Store<AppState>,private route:Router){
+    this.data$ = this.store.select(selectMAIN);
+    this.data$.subscribe(data=>{
+      if(data.username){
+        console.log('dash');
+        this.route.navigate(['dash']);
+      }
+    })
     this.responsiveOptions = [
       {
           breakpoint: '1440px',

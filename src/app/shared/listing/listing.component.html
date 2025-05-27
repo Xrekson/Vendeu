@@ -1,0 +1,77 @@
+<!-- listing.component.html -->
+<div class="grid p-4">
+  <div class="col-12">
+    <h1>Current Auctions</h1>
+    <p-divider></p-divider>
+  </div>
+
+  <div class="col-12 md:col-6 lg:col-4" *ngFor="let item of listingData">
+    <p-card [header]="item.name" [subheader]="'Item #' + item.id">
+      <ng-template pTemplate="header">
+        <p-galleria 
+          [value]="item.images" 
+          [responsiveOptions]="responsiveOptions" 
+          [containerStyle]="{'max-width': '100%'}"
+          [circular]="true" 
+          [autoPlay]="true"
+          [showThumbnails]="false"
+          [showIndicators]="true">
+          <ng-template pTemplate="item" let-item>
+            <img [src]="item || 'https://placehold.co/600x400'" [alt]="item.name" class="w-full" style="max-height: 200px; object-fit: cover;"/>
+          </ng-template>
+        </p-galleria>
+      </ng-template>
+
+      <div class="mb-3">
+        <p-tag 
+          [value]="getAuctionStatus(item.auction_end)" 
+          [severity]="getAuctionStatus(item.auction_end) === 'Active' ? 'success' : 'danger'">
+        </p-tag>
+        <span class="ml-2 text-sm">
+            @if (getTimeRemaining(item.auction_end)=="Auction ended") {
+                {{ getTimeRemaining(item.auction_end) }}
+            }@else{
+                <countdown [config]="{ leftTime: item.endTime }" />
+            }
+        </span>
+      </div>
+
+      <p-timeline [value]="[
+        { status: 'Started', date: item.auction_start | date:'short' },
+        { status: 'Ends', date: item.auction_end | date:'short' }
+      ]" align="alternate">
+        <ng-template pTemplate="content" let-event>
+          {{ event.status }}
+        </ng-template>
+        <ng-template pTemplate="opposite" let-event>
+          {{ event.date }}
+        </ng-template>
+      </p-timeline>
+
+      <p-progressBar 
+        [value]="getProgressValue(item.auction_start, item.auction_end)" 
+        [showValue]="false">
+      </p-progressBar>
+
+      <p class="mt-3 line-clamp-2">{{ item.detail }}</p>
+
+      <div class="flex justify-between items-center mt-4">
+        <div>
+          <span class="text-2xl font-bold">${{ item.price }}</span>
+          <span class="text-sm ml-2">(+${{ item.priceInterval }})</span>
+        </div>
+        <div>
+          <span class="block text-sm">Highest bid:</span>
+          <span class="font-bold">${{ item.highestbid || 'No bids yet' }}</span>
+        </div>
+      </div>
+
+      <ng-template pTemplate="footer">
+        <div class="flex gap-2">
+          <p-button icon="pi pi-eye" label="View Details" styleClass="p-button-outlined" (onClick)="getToDetails(item.id)"></p-button>
+          <p-button icon="pi pi-gavel" label="Place Bid" [disabled]="getAuctionStatus(item.auction_end) === 'Ended'"></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

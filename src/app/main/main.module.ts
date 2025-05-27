@@ -27,6 +27,7 @@ import { LoginComponent } from './login/login.component';
 import { StoreModule } from '@ngrx/store';
 import { BidComponent } from './bid/bid.component';
 import { BiddingMsgComponent } from '../shared/bidding-msg/bidding-msg.component';
+import { RouterBackService } from '../services/routerBack.service';
 
 @NgModule({
   declarations: [HomeComponent,RegisterComponent,LoginComponent,BidComponent],
@@ -52,6 +53,6 @@ import { BiddingMsgComponent } from '../shared/bidding-msg/bidding-msg.component
     ReactiveFormsModule,
     StoreModule,
     BiddingMsgComponent
-],providers:[AuthService]
+],providers:[AuthService,RouterBackService]
 })
 export class MainModule { }
