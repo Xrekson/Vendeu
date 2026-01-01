@@ -8,14 +8,12 @@ import { AuthGuard } from '../services/auth/AUthGuard';
 import { DashComponent } from './dash/dash.component';
 import { AuctionDetailsComponent } from './auction-details/auction-details.component';
 
-const routes: Routes = [{ path: '', component: HomeComponent }, { path: 'register', component: RegisterComponent }, { path: 'login', component: LoginComponent }, 
-  { path: 'bid', component: BidComponent , canActivate: [AuthGuard] },
-{
-  path: 'dash', component: DashComponent , canActivate: [AuthGuard]
-},
-{
-  path: 'details/:id', component: AuctionDetailsComponent , canActivate: [AuthGuard]
-}
+const routes: Routes = [{ path: '', component: HomeComponent },
+{ path: 'register', component: RegisterComponent },
+{ path: 'login', component: LoginComponent },
+{ path: 'bid', component: BidComponent, canActivate: [AuthGuard] },
+{ path: 'dash', component: DashComponent, canActivate: [AuthGuard] },
+{ path: 'details/:id', component: AuctionDetailsComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

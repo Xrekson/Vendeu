@@ -6,20 +6,22 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
 
 
-import { ImageModule } from 'primeng/image';
-import { CarouselModule } from 'primeng/carousel';
-import { TagModule } from 'primeng/tag';
-import { ButtonModule } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { PasswordModule } from 'primeng/password';
-import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
-import { SelectModule } from 'primeng/select';
-import { DatePickerModule } from 'primeng/datepicker';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { FileUploadModule } from 'primeng/fileupload';
+// Angular Material Imports
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatStepperModule } from '@angular/material/stepper';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService } from '../services/auth/auth.service';
@@ -28,31 +30,36 @@ import { StoreModule } from '@ngrx/store';
 import { BidComponent } from './bid/bid.component';
 import { BiddingMsgComponent } from '../shared/bidding-msg/bidding-msg.component';
 import { RouterBackService } from '../services/routerBack.service';
+import { CarouselComponent } from '../shared/carousel/carousel.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [HomeComponent,RegisterComponent,LoginComponent,BidComponent],
   imports: [
     CommonModule,
     MainRoutingModule,
-    ImageModule,
-    CarouselModule,
-    TagModule,
-    ButtonModule,
-    FloatLabelModule,
-    InputGroupModule,
-    InputGroupAddonModule,
-    DatePickerModule,
-    PasswordModule,
-    InputTextModule,
-    TextareaModule,
-    SelectModule,
-    InputNumberModule,
-    FileUploadModule,
+    MatCardModule,
+    MatTabsModule,
+    MatButtonModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
     StoreModule,
-    BiddingMsgComponent
+    BiddingMsgComponent,
+    MatFormFieldModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    MatTooltipModule,
+    MatInputModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatDatepickerModule,
+
+    CarouselComponent,
+    ConfirmationDialogComponent
 ],providers:[AuthService,RouterBackService]
 })
 export class MainModule { }

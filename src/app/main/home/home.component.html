@@ -1,20 +1,77 @@
-<p-carousel [value]="products" [numVisible]="3" [numScroll]="3" [circular]="true" [responsiveOptions]="responsiveOptions" autoplayInterval="3000">
-    <ng-template let-product #item>
-        <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4 h-[20rem]">
-            <div class="mb-4">
-                <div class="relative mx-auto border-4 border-emerald-600 rounded-md p-2">
-                    <img [src]="product.img" class="m-auto h-[10rem]" [alt]="product.img"/>
-                    <p-tag class="absolute" styleClass="dark:!bg-surface-900" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" />
-                </div>
-            </div>
-            <div class="mb-4 font-medium">{{ product.name }}</div>
-            <div class="flex justify-between items-center">
-                <div class="mt-0 font-semibold text-xl">{{ product.price | currency}}</div>
-                <span>
-                    <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
-                    <p-button icon="pi pi-shopping-cart" styleClass="ml-2" />
-                </span>
-            </div>
+<div class="app-container">
+      <header class="app-header">
+        <h1>Firearms Showcase</h1>
+        <p class="subtitle">Premium Collection of Tactical Firearms</p>
+      </header>
+      
+      <main class="main-content">
+        <mat-card class="featured-section">
+          <mat-card-header>
+            <mat-card-title>Featured Products</mat-card-title>
+            <mat-card-subtitle>Premium firearms with military-grade specifications</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <app-carousel
+              [products]="products"
+              [autoSlide]="true"
+              [slideInterval]="5000"
+              [showIndicators]="true"
+              [showNavigation]="true"
+              [showThumbnails]="true"
+              [showAddToCart]="true"
+              [height]="'600px'"
+              [borderRadius]="'16px'"
+              [cardMode]="false"
+              (productClick)="onProductClick($event)"
+              (addToCart)="onAddToCart($event)"
+            >
+            </app-carousel>
+          </mat-card-content>
+        </mat-card>
+        
+        <div class="additional-products">
+          <h2>Card View Carousel</h2>
+          <p class="section-description">Browse products in card format</p>
+          
+          <mat-card class="card-section">
+            <app-carousel
+              [products]="products"
+              [autoSlide]="false"
+              [showIndicators]="true"
+              [showNavigation]="true"
+              [showThumbnails]="false"
+              [showAddToCart]="true"
+              [height]="'450px'"
+              [borderRadius]="'12px'"
+              [cardMode]="true"
+              (productClick)="onProductClick($event)"
+              (addToCart)="onAddToCart($event)"
+            >
+            </app-carousel>
+          </mat-card>
         </div>
-    </ng-template>
-</p-carousel>
+        
+        <div class="stats-section">
+          <mat-card>
+            <mat-card-content>
+              <h3>Firearm Statistics</h3>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <span class="stat-number">{{ products.length }}</span>
+                  <span class="stat-label">Total Products</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">{{ getAveragePrice() | currency }}</span>
+                  <span class="stat-label">Average Price</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">{{ getTotalValue() | currency }}</span>
+                  <span class="stat-label">Total Inventory Value</span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </main>
+    </div>

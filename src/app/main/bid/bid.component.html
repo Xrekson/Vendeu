@@ -3,9 +3,9 @@ Message Inbox
 </div>
 <app-bidding-msg [dataMsg]="messages"></app-bidding-msg>
 
-<p-inputgroup>
-    <input pInputText placeholder="Keyword" [(ngModel)]="msg" />
-    <p-inputgroup-addon>
-        <p-button label="Search" (onClick)="sendMsg()"/>
-    </p-inputgroup-addon>
-</p-inputgroup>
+<mat-form-field>
+    <input matInput placeholder="Keyword" [(ngModel)]="msg" />
+    <mat-label>
+        <button matButton="filled" label="Search" (onClick)="sendMsg()"></button>
+    </mat-label>
+</mat-form-field>

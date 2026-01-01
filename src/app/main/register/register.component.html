@@ -1,88 +1,483 @@
-<div class="my-auto mx-5 sm:mx-50 p-5">
-    <div class="text-center m-12">
-        <h1>Login</h1>
+<div class="register-container" @fadeIn>
+  <mat-card class="register-card">
+    <!-- Header Section -->
+    <div class="register-header">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <mat-icon>person_add</mat-icon>
+        </div>
+        <h1 class="app-title">Create Account</h1>
+      </div>
+      <p class="welcome-text">Join our community in just a few steps</p>
     </div>
-    <form [formGroup]="actorForm" (submit)="submitForm()">
-        <div class="grid grid-cols-12 gap-10">
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel variant="on">
-                        <input id="username" pInputText formControlName="username" />
-                        <label for="username"> <fa-icon [icon]="['fas','user']" /> Username</label>
-                    </p-floatlabel>
-                </p-inputgroup>
+
+    <!-- Registration Form -->
+    <div class="register-content" @slideIn>
+      <mat-stepper [linear]="isLinear" [selectedIndex]="currentStep">
+        
+        <!-- Step 1: Personal Information -->
+        <mat-step [stepControl]="actorForm" [completed]="actorForm.get('name')?.valid && 
+                                                         actorForm.get('username')?.valid && 
+                                                         actorForm.get('email')?.valid && 
+                                                         actorForm.get('dob')?.valid">
+          <ng-template matStepLabel>Personal Info</ng-template>
+          
+          <form [formGroup]="actorForm">
+            <div class="step-content">
+              <div class="form-grid">
+                <!-- Name Field -->
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Full Name</mat-label>
+                  <input 
+                    matInput 
+                    formControlName="name"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                  >
+                  <mat-icon matPrefix>person</mat-icon>
+                  
+                  <mat-hint *ngIf="name?.valid && name?.touched">
+                    ✓ Valid name
+                  </mat-hint>
+                  
+                  <mat-error *ngIf="name?.hasError('required') && (name?.dirty || name?.touched)">
+                    Full name is required
+                  </mat-error>
+                  <mat-error *ngIf="name?.hasError('pattern') && (name?.dirty || name?.touched)">
+                    Name can only contain letters and spaces
+                  </mat-error>
+                  <mat-error *ngIf="name?.hasError('maxlength') && (name?.dirty || name?.touched)">
+                    Name cannot exceed 100 characters
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Username Field -->
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Username</mat-label>
+                  <input 
+                    matInput 
+                    formControlName="username"
+                    placeholder="Choose a username"
+                    autocomplete="username"
+                  >
+                  <mat-icon matPrefix>alternate_email</mat-icon>
+                  
+                  <mat-hint *ngIf="username?.valid && username?.touched">
+                    ✓ Username available
+                  </mat-hint>
+                  
+                  <mat-error *ngIf="username?.hasError('required') && (username?.dirty || username?.touched)">
+                    Username is required
+                  </mat-error>
+                  <mat-error *ngIf="username?.hasError('minlength') && (username?.dirty || username?.touched)">
+                    Username must be at least 5 characters
+                  </mat-error>
+                  <mat-error *ngIf="username?.hasError('pattern') && (username?.dirty || username?.touched)">
+                    Only letters, numbers, and underscores allowed
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Email Field -->
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Email Address</mat-label>
+                  <input 
+                    matInput 
+                    type="email"
+                    formControlName="email"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                  >
+                  <mat-icon matPrefix>email</mat-icon>
+                  
+                  <mat-hint *ngIf="email?.valid && email?.touched">
+                    ✓ Valid email format
+                  </mat-hint>
+                  
+                  <mat-error *ngIf="email?.hasError('required') && (email?.dirty || email?.touched)">
+                    Email is required
+                  </mat-error>
+                  <mat-error *ngIf="email?.hasError('email') && (email?.dirty || email?.touched)">
+                    Please enter a valid email address
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Date of Birth Field -->
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Date of Birth</mat-label>
+                  <input 
+                    matInput 
+                    [matDatepicker]="picker"
+                    formControlName="dob"
+                    [max]="maxDate"
+                    [min]="minDate"
+                    placeholder="Select your date of birth"
+                  >
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-icon matPrefix>calendar_today</mat-icon>
+                  
+                  <mat-hint>Must be 18+ years old</mat-hint>
+                  
+                  <mat-error *ngIf="dob?.hasError('required') && (dob?.dirty || dob?.touched)">
+                    Date of birth is required
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Mobile Number Field -->
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>Mobile Number</mat-label>
+                  <input 
+                    matInput 
+                    formControlName="mobileno"
+                    placeholder="Enter 10-digit mobile number"
+                    maxlength="10"
+                  >
+                  <mat-icon matPrefix>phone</mat-icon>
+                  
+                  <mat-hint *ngIf="mobileno?.valid && mobileno?.touched">
+                    ✓ Valid mobile number
+                  </mat-hint>
+                  
+                  <mat-error *ngIf="mobileno?.hasError('required') && (mobileno?.dirty || mobileno?.touched)">
+                    Mobile number is required
+                  </mat-error>
+                  <mat-error *ngIf="mobileno?.hasError('pattern') && (mobileno?.dirty || mobileno?.touched)">
+                    Please enter a valid 10-digit mobile number
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="step-actions">
+                <button 
+                  mat-button 
+                  color="primary"
+                  (click)="nextStep()"
+                  [disabled]="!name?.valid || !username?.valid || !email?.valid || !dob?.valid || !mobileno?.valid"
+                >
+                  Next: Account Setup
+                  <mat-icon>arrow_forward</mat-icon>
+                </button>
+              </div>
             </div>
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel variant="on">
-                        <input id="name" pInputText formControlName="name" />
-                        <label for="name"><fa-icon [icon]="['far','user']" /> Name</label>
-                    </p-floatlabel>
-                </p-inputgroup>
+          </form>
+        </mat-step>
+
+        <!-- Step 2: Account Setup -->
+        <mat-step [stepControl]="actorForm" [completed]="actorForm.get('password')?.valid && 
+                                                         actorForm.get('confirmPassword')?.valid">
+          <ng-template matStepLabel>Account Setup</ng-template>
+          
+          <div class="step-content">
+            <div class="form-grid">
+              <!-- Password Field -->
+              <mat-form-field appearance="outline" class="form-field password-field">
+                <mat-label>Password</mat-label>
+                <input 
+                  matInput 
+                  [type]="showPassword ? 'text' : 'password'"
+                  formControlName="password"
+                  placeholder="Create a strong password"
+                  autocomplete="new-password"
+                >
+                <mat-icon matPrefix>lock</mat-icon>
+                
+                <button 
+                  mat-icon-button 
+                  matSuffix 
+                  type="button"
+                  (click)="showPassword = !showPassword"
+                  [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+                >
+                  <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                
+                <mat-hint *ngIf="password?.value">
+                  <div class="password-strength">
+                    <span>Strength: </span>
+                    <span [style.color]="getPasswordStrengthColor(calculatePasswordStrength(password?.value))">
+                      {{ getPasswordStrengthText(calculatePasswordStrength(password?.value)) }}
+                    </span>
+                    <div class="strength-bar">
+                      <div 
+                        class="strength-fill"
+                        [style.width]="calculatePasswordStrength(password?.value) + '%'"
+                        [style.background]="getPasswordStrengthColor(calculatePasswordStrength(password?.value))"
+                      ></div>
+                    </div>
+                  </div>
+                  
+                  <div class="password-requirements">
+                    <span [class.requirement-met]="checkRegex('/(?=.*[a-z])/',password?.value)">
+                      ✓ At least one lowercase letter
+                    </span>
+                    <span [class.requirement-met]="checkRegex('/(?=.*[A-Z])/',password?.value)">
+                      ✓ At least one uppercase letter
+                    </span>
+                    <span [class.requirement-met]="checkRegex('/(?=.*\d)/',password?.value)">
+                      ✓ At least one number
+                    </span>
+                    <span [class.requirement-met]="checkRegex('/(?=.*[@$!%*?&])/',password?.value)">
+                      ✓ At least one special character (@$!%*?&)
+                    </span>
+                    <span [class.requirement-met]="password?.value?.length >= 8">
+                      ✓ Minimum 8 characters
+                    </span>
+                  </div>
+                </mat-hint>
+                
+                <mat-error *ngIf="password?.hasError('required') && (password?.dirty || password?.touched)">
+                  Password is required
+                </mat-error>
+                <mat-error *ngIf="password?.hasError('minlength') && (password?.dirty || password?.touched)">
+                  Password must be at least 8 characters
+                </mat-error>
+                <mat-error *ngIf="password?.hasError('pattern') && (password?.dirty || password?.touched)">
+                  Must include uppercase, lowercase, number, and special character
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Confirm Password Field -->
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Confirm Password</mat-label>
+                <input 
+                  matInput 
+                  [type]="showConfirmPassword ? 'text' : 'password'"
+                  formControlName="confirmPassword"
+                  placeholder="Confirm your password"
+                  autocomplete="new-password"
+                >
+                <mat-icon matPrefix>lock_reset</mat-icon>
+                
+                <button 
+                  mat-icon-button 
+                  matSuffix 
+                  type="button"
+                  (click)="showConfirmPassword = !showConfirmPassword"
+                  [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
+                >
+                  <mat-icon>{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                
+                <mat-error *ngIf="confirmPassword?.hasError('required') && (confirmPassword?.dirty || confirmPassword?.touched)">
+                  Please confirm your password
+                </mat-error>
+                <mat-error *ngIf="actorForm.hasError('passwordMismatch') && confirmPassword?.touched">
+                  Passwords do not match
+                </mat-error>
+              </mat-form-field>
             </div>
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel>
-                        <p-password class="w-full" [inputStyle]="{'width': '100%'}" [style]="{'width': '100%'}"
-                            id="password" formControlName="password" [feedback]="false" />
-                        <label for="password"><fa-icon [icon]="['fas','lock']" /> Password</label>
-                    </p-floatlabel>
-                </p-inputgroup>
+
+            <div class="step-actions">
+              <button 
+                mat-button 
+                color="primary"
+                (click)="prevStep()"
+              >
+                <mat-icon>arrow_back</mat-icon>
+                Back
+              </button>
+              <button 
+                mat-button 
+                color="primary"
+                (click)="nextStep()"
+                [disabled]="!password?.valid || !confirmPassword?.valid"
+              >
+                Next: Additional Info
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
             </div>
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel variant="on">
-                        <input id="email" pInputText formControlName="email" />
-                        <label for="email"><fa-icon [icon]="['fas','at']" />Email</label>
-                    </p-floatlabel>
-                </p-inputgroup>
+          </div>
+        </mat-step>
+
+        <!-- Step 3: Additional Information -->
+        <mat-step [stepControl]="actorForm" [completed]="actorForm.get('type')?.valid && 
+                                                         actorForm.get('deg')?.valid && 
+                                                         actorForm.get('about')?.valid">
+          <ng-template matStepLabel>Additional Info</ng-template>
+          
+          <div class="step-content">
+            <div class="form-grid">
+              <!-- User Type Field -->
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>User Type</mat-label>
+                <mat-select formControlName="type" placeholder="Select user type">
+                  <mat-option *ngFor="let type of userType" [value]="type">
+                    {{ type.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix>person_pin</mat-icon>
+                
+                <mat-error *ngIf="type?.hasError('required') && (type?.dirty || type?.touched)">
+                  Please select a user type
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Position Field -->
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Position/Title</mat-label>
+                <input 
+                  matInput 
+                  formControlName="deg"
+                  placeholder="Enter your position or title"
+                >
+                <mat-icon matPrefix>work</mat-icon>
+                
+                <mat-error *ngIf="deg?.hasError('required') && (deg?.dirty || deg?.touched)">
+                  Position is required
+                </mat-error>
+                <mat-error *ngIf="deg?.hasError('maxlength') && (deg?.dirty || deg?.touched)">
+                  Position cannot exceed 100 characters
+                </mat-error>
+              </mat-form-field>
+
+              <!-- About Field -->
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>About Yourself</mat-label>
+                <textarea 
+                  matInput 
+                  formControlName="about"
+                  placeholder="Tell us about yourself (20-255 characters)"
+                  rows="4"
+                ></textarea>
+                <mat-icon matPrefix>description</mat-icon>
+                
+                <mat-hint>{{ about?.value?.length || 0 }}/255 characters</mat-hint>
+                
+                <mat-error *ngIf="about?.hasError('required') && (about?.dirty || about?.touched)">
+                  About section is required
+                </mat-error>
+                <mat-error *ngIf="about?.hasError('minlength') && (about?.dirty || about?.touched)">
+                  Please provide at least 20 characters
+                </mat-error>
+                <mat-error *ngIf="about?.hasError('maxlength') && (about?.dirty || about?.touched)">
+                  Cannot exceed 255 characters
+                </mat-error>
+              </mat-form-field>
             </div>
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel variant="on">
-                        <p-inputnumber inputId="integeronly" formControlName="mobileno" id="number" />
-                        <label for="number"><fa-icon [icon]="['fas','mobile']" />Mobile</label>
-                    </p-floatlabel>
-                </p-inputgroup>
+
+            <div class="step-actions">
+              <button 
+                mat-button 
+                color="primary"
+                (click)="prevStep()"
+              >
+                <mat-icon>arrow_back</mat-icon>
+                Back
+              </button>
+              <button 
+                mat-button 
+                color="primary"
+                (click)="nextStep()"
+                [disabled]="!type?.valid || !deg?.valid || !about?.valid"
+              >
+                Next: Review & Submit
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
             </div>
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel variant="on">
-                        <textarea id="about" class="w-full" pTextarea formControlName="about"></textarea>
-                        <label for="about"><fa-icon [icon]="['fas','comment']" /> About</label>
-                    </p-floatlabel>
-                </p-inputgroup>
+          </div>
+        </mat-step>
+
+        <!-- Step 4: Review & Submit -->
+        <mat-step [stepControl]="actorForm" [completed]="actorForm.get('acceptTerms')?.valid">
+          <ng-template matStepLabel>Review & Submit</ng-template>
+          
+          <div class="step-content">
+            <div class="review-section">
+              <h3>Review Your Information</h3>
+              
+              <div class="review-grid">
+                <div class="review-item">
+                  <span class="review-label">Full Name:</span>
+                  <span class="review-value">{{ name?.value || 'Not provided' }}</span>
+                </div>
+                <div class="review-item">
+                  <span class="review-label">Username:</span>
+                  <span class="review-value">{{ username?.value || 'Not provided' }}</span>
+                </div>
+                <div class="review-item">
+                  <span class="review-label">Email:</span>
+                  <span class="review-value">{{ email?.value || 'Not provided' }}</span>
+                </div>
+                <div class="review-item">
+                  <span class="review-label">Date of Birth:</span>
+                  <span class="review-value">{{ dob?.value ? (dob?.value | date: 'mediumDate') : 'Not provided' }}</span>
+                </div>
+                <div class="review-item">
+                  <span class="review-label">Mobile:</span>
+                  <span class="review-value">{{ mobileno?.value || 'Not provided' }}</span>
+                </div>
+                <div class="review-item">
+                  <span class="review-label">User Type:</span>
+                  <span class="review-value">{{ type?.value?.name || 'Not selected' }}</span>
+                </div>
+                <div class="review-item">
+                  <span class="review-label">Position:</span>
+                  <span class="review-value">{{ deg?.value || 'Not provided' }}</span>
+                </div>
+              </div>
+
+              <!-- Terms & Conditions -->
+              <mat-divider></mat-divider>
+              
+              <div class="terms-section">
+                <mat-checkbox formControlName="acceptTerms" color="primary">
+                  I agree to the 
+                  <a href="#" class="terms-link">Terms of Service</a> 
+                  and 
+                  <a href="#" class="terms-link">Privacy Policy</a>
+                </mat-checkbox>
+                
+                <mat-error *ngIf="acceptTerms?.hasError('required') && acceptTerms?.touched">
+                  You must accept the terms and conditions
+                </mat-error>
+              </div>
             </div>
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel>
-                        <p-datepicker class="w-full" [readonlyInput]="true" [inputStyle]="{'width': '100%'}"
-                            [style]="{'width': '100%'}" formControlName="dob" [dateFormat]="''" [showIcon]="true" id="dob"
-                            inputId="buttondisplay" [showOnFocus]="false" />
-                        <label for="about"><fa-icon [icon]="['fas','calendar-days']" /> Date of Birth</label>
-                    </p-floatlabel>
-                </p-inputgroup>
+
+            <div class="step-actions">
+              <button 
+                mat-button 
+                color="primary"
+                (click)="prevStep()"
+              >
+                <mat-icon>arrow_back</mat-icon>
+                Back
+              </button>
+              <button 
+                mat-raised-button 
+                color="primary"
+                class="submit-button"
+                (click)="submitForm()"
+                [disabled]="isLoading || actorForm.invalid"
+              >
+                <div class="button-content">
+                  @if (isLoading) {
+                    <mat-spinner diameter="20" class="loading-spinner"></mat-spinner>
+                    <span>Creating Account...</span>
+                  } @else {
+                    <mat-icon>how_to_reg</mat-icon>
+                    <span>Create Account</span>
+                  }
+                </div>
+              </button>
             </div>
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel variant="in">
-                        <p-select id="pos" [options]="userType" optionLabel="name" placeholder="User Type"
-                            class="w-full md:w-56" formControlName="type" />
-                        <label for="pos"><fa-icon [icon]="['fas','person']" />User Type</label>
-                    </p-floatlabel>
-                </p-inputgroup>
-            </div>
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel variant="on">
-                        <input id="deg" pInputText formControlName="deg" />
-                        <label for="deg"><fa-icon [icon]="['fas','person']" />Position</label>
-                    </p-floatlabel>
-                </p-inputgroup>
-            </div>
-        </div>
-        <div class="flex flex-col ">
-            <p-button class="mx-auto my-5" size="large" [label]="'Register'" [type]="'submit'"></p-button>
-        </div>
-    </form>
+          </div>
+        </mat-step>
+
+      </mat-stepper>
+
+      <!-- Already have an account -->
+      <div class="login-link-section">
+        <p>Already have an account?</p>
+        <button 
+          mat-stroked-button 
+          color="primary"
+          class="login-button"
+          (click)="goToLogin()"
+        >
+          <mat-icon>login</mat-icon>
+          Sign In
+        </button>
+      </div>
+    </div>
+  </mat-card>
 </div>

@@ -1,0 +1,169 @@
+<div 
+  #carouselContainer
+  class="carousel-container"
+  [class.card-mode]="cardMode"
+  [style.--carousel-height]="height"
+  [style.--carousel-border-radius]="borderRadius"
+  (mouseenter)="pauseAutoSlide()"
+  (mouseleave)="resumeAutoSlide()"
+>
+  <!-- Carousel Track -->
+  <div class="carousel-track">
+    @for (product of products; track product.id; let i = $index) {
+      @if (i === currentIndex) {
+        <div 
+          class="carousel-item" 
+          [@carouselAnimation]
+        >
+          @if (!cardMode) {
+            <!-- Full Product View -->
+            <div class="product-image-container">
+              <img 
+                [src]="product.img" 
+                [alt]="product.name" 
+                class="product-image"
+                loading="lazy"
+              >
+            </div>
+            
+            <div class="product-info" @fadeIn>
+              <h2 class="product-title">{{ product.name }}</h2>
+              
+              <div class="product-price">
+                {{ formatPrice(product.price) }}
+              </div>
+              
+              @if (product.description) {
+                <p class="product-description">{{ product.description }}</p>
+              }
+              
+              @if (product.category) {
+                <mat-chip>{{ product.category }}</mat-chip>
+              }
+              
+              <div class="product-actions">
+                @if (showAddToCart && product.inStock) {
+                  <button 
+                    mat-raised-button 
+                    class="add-to-cart-btn"
+                    (click)="onAddToCart(product, $event)"
+                  >
+                    <mat-icon>add_shopping_cart</mat-icon>
+                    Add to Cart
+                  </button>
+                }
+                
+                <button 
+                  mat-stroked-button 
+                  class="details-btn"
+                  (click)="onProductClick(product)"
+                >
+                  View Details
+                </button>
+              </div>
+            </div>
+          } @else {
+            <!-- Card View -->
+            <mat-card class="product-card" (click)="onProductClick(product)">
+              <img 
+                mat-card-image
+                [src]="product.img" 
+                [alt]="product.name" 
+                class="card-image"
+                loading="lazy"
+              >
+              
+              <div class="card-content">
+                <h3 class="card-title">{{ product.name }}</h3>
+                
+                <div class="card-price">
+                  {{ formatPrice(product.price) }}
+                </div>
+                
+                <div class="card-actions">
+                  @if (showAddToCart && product.inStock) {
+                    <button 
+                      mat-raised-button 
+                      color="primary"
+                      class="add-to-cart-btn"
+                      (click)="onAddToCart(product, $event)"
+                    >
+                      <mat-icon>add_shopping_cart</mat-icon>
+                      Add to Cart
+                    </button>
+                  } @else if (!product.inStock) {
+                    <mat-chip class="stock-badge out-of-stock">
+                      Out of Stock
+                    </mat-chip>
+                  }
+                  
+                  @if (product.inStock) {
+                    <mat-chip class="stock-badge in-stock">
+                      In Stock
+                    </mat-chip>
+                  }
+                </div>
+              </div>
+            </mat-card>
+          }
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Navigation Buttons -->
+  @if (showNavigation && products.length > 1) {
+    <div class="carousel-nav">
+      <button 
+        mat-icon-button 
+        class="nav-button"
+        (click)="prev()"
+        aria-label="Previous product"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button 
+        mat-icon-button 
+        class="nav-button"
+        (click)="next()"
+        aria-label="Next product"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  }
+
+  <!-- Indicators -->
+  @if (showIndicators && products.length > 1) {
+    <div class="carousel-indicators">
+      @for (product of products; track product.id; let i = $index) {
+        <button
+          class="indicator"
+          [class.active]="i === currentIndex"
+          (click)="goToSlide(i)"
+          [attr.aria-label]="'View ' + product.name"
+        ></button>
+      }
+    </div>
+  }
+
+  <!-- Thumbnails -->
+  @if (showThumbnails && products.length > 1) {
+    <div class="carousel-thumbnails">
+      @for (product of products; track product.id; let i = $index) {
+        <div
+          class="thumbnail"
+          [class.active]="i === currentIndex"
+          (click)="goToSlide(i)"
+          [attr.aria-label]="'Select ' + product.name"
+        >
+          <img 
+            [src]="product.img" 
+            [alt]="'Thumbnail for ' + product.name"
+            loading="lazy"
+          >
+        </div>
+      }
+    </div>
+  }
+</div>

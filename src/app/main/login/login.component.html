@@ -1,29 +1,187 @@
-<div class="my-auto mx-10 my-auto sm:mx-10 md:mx-25 lg:mx-50 p-5">
-    <div class="text-center m-12">
-        <h1>Login</h1>
+<div class="login-container" @fadeIn>
+  <mat-card class="login-card">
+    <!-- Header Section -->
+    <div class="login-header">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <mat-icon>security</mat-icon>
+        </div>
+        <h1 class="app-title">RAM AGER</h1>
+      </div>
+      <p class="welcome-text">Secure Authentication Portal</p>
     </div>
-    <form [formGroup]="actorForm" (submit)="submitForm()">
-        <div class="grid grid-cols-12 gap-10">
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel>
-                        <input id="username" pInputText formControlName="username" />
-                        <label for="username"> <fa-icon [icon]="['fas','user']" /> Username</label>
-                    </p-floatlabel>
-                </p-inputgroup>
+
+    <!-- Login Form -->
+    <div class="login-content" @slideIn>
+      <form [formGroup]="actorForm" (ngSubmit)="submitForm()" novalidate>
+        <!-- Username Field -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Username</mat-label>
+          <input 
+            matInput 
+            formControlName="username"
+            placeholder="Enter your username"
+            autocomplete="username"
+          >
+          <mat-icon matPrefix>person</mat-icon>
+          
+          <mat-hint *ngIf="!username?.errors && username?.touched">
+            ✓ Valid username
+          </mat-hint>
+          
+          <mat-error *ngIf="username?.hasError('required') && (username?.dirty || username?.touched)">
+            Username is required
+          </mat-error>
+          <mat-error *ngIf="username?.hasError('minlength') && (username?.dirty || username?.touched)">
+            Username must be at least 5 characters
+          </mat-error>
+          <mat-error *ngIf="username?.hasError('maxlength') && (username?.dirty || username?.touched)">
+            Username cannot exceed 100 characters
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password Field -->
+        <mat-form-field appearance="outline" class="form-field password-field">
+          <mat-label>Password</mat-label>
+          <input 
+            matInput 
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+          >
+          <mat-icon matPrefix>lock</mat-icon>
+          
+          <button 
+            mat-icon-button 
+            matSuffix 
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+            matTooltip="{{ showPassword ? 'Hide password' : 'Show password' }}"
+          >
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          
+          <mat-hint *ngIf="password?.value && !password?.errors">
+            <div class="password-strength">
+              <span>Strength: </span>
+              <span [style.color]="getPasswordStrengthColor()">
+                {{ getPasswordStrengthText() }}
+              </span>
+              <div class="strength-bar">
+                <div 
+                  class="strength-fill"
+                  [style.width]="passwordStrength + '%'"
+                  [style.background]="getPasswordStrengthColor()"
+                ></div>
+              </div>
             </div>
-            <div class="col-span-12 sm:col-span-6">
-                <p-inputgroup>
-                    <p-floatlabel>
-                        <p-password class="w-full" [inputStyle]="{'width': '100%'}" [style]="{'width': '100%'}"
-                            id="password" formControlName="password" [feedback]="false" />
-                        <label for="password"> <fa-icon [icon]="['fas','user']" /> Password</label>
-                    </p-floatlabel>
-                </p-inputgroup>
-            </div> 
+          </mat-hint>
+          
+          <mat-hint *ngIf="password?.value">
+            <div class="password-requirements">
+              <span [class.requirement-met]="checkUpperpassword(password?.value)">
+                ✓ At least one uppercase letter
+              </span>
+              <span [class.requirement-met]="checkpassword(password?.value)">
+                ✓ At least one special character
+              </span>
+              <span [class.requirement-met]="checkthreepassword(password?.value)">
+                ✓ At least three numbers
+              </span>
+              <span [class.requirement-met]="password?.value?.length >= 4">
+                ✓ Minimum 4 characters
+              </span>
+            </div>
+          </mat-hint>
+          
+          <mat-error *ngIf="password?.hasError('required') && (password?.dirty || password?.touched)">
+            Password is required
+          </mat-error>
+          <mat-error *ngIf="password?.hasError('pattern') && (password?.dirty || password?.touched)">
+            Password must contain: uppercase letter, special character, and at least 3 numbers
+          </mat-error>
+          <mat-error *ngIf="password?.hasError('maxlength') && (password?.dirty || password?.touched)">
+            Password cannot exceed 100 characters
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Remember Me & Demo -->
+        <div class="form-options">
+          <mat-checkbox formControlName="rememberMe" color="primary">
+            Remember me
+          </mat-checkbox>
+          
+          <button 
+            type="button" 
+            mat-button 
+            color="accent" 
+            class="demo-btn"
+            (click)="fillDemoCredentials()"
+            matTooltip="Fill with demo credentials for testing"
+          >
+            <mat-icon>visibility</mat-icon>
+            Demo Credentials
+          </button>
         </div>
-        <div class="flex flex-col ">
-            <p-button class="mx-auto my-5" size="large" [label]="'Login'" [type]="'submit'"></p-button>
+
+        <!-- Submit Button -->
+        <button 
+          mat-raised-button 
+          color="primary" 
+          class="submit-button"
+          type="submit"
+          [disabled]="isLoading || actorForm.invalid"
+        >
+          <div class="button-content">
+            @if (isLoading) {
+              <mat-spinner diameter="20" class="loading-spinner"></mat-spinner>
+              <span>Signing in...</span>
+            } @else {
+              <mat-icon>login</mat-icon>
+              <span>Sign In</span>
+            }
+          </div>
+        </button>
+
+        <!-- Divider -->
+        <mat-divider class="divider">
+          <span class="divider-text">or</span>
+        </mat-divider>
+
+        <!-- Additional Actions -->
+        <div class="additional-actions">
+          <a 
+            mat-button 
+            color="primary" 
+            class="action-link"
+            [routerLink]="['/forgot-password']"
+          >
+            <mat-icon>help</mat-icon>
+            Forgot Password?
+          </a>
+          
+          <a 
+            mat-button 
+            color="accent" 
+            class="action-link"
+            [routerLink]="['/register']"
+          >
+            <mat-icon>person_add</mat-icon>
+            Create Account
+          </a>
         </div>
-    </form>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="login-footer">
+      <p class="footer-text">
+        <mat-icon>security</mat-icon>
+        Secure authentication powered by Angular Material & NgRx
+      </p>
+      <p class="version-info">v1.0.0</p>
+    </div>
+  </mat-card>
 </div>

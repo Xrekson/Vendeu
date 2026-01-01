@@ -6,8 +6,8 @@
     
     <ng-template #end>
         <div class="flex items-center gap-2">
-            <fa-icon [icon]="['fas','copyright']" [size]="'xl'"/>
-            <p-button [label]="date.getFullYear()+''" [size]="'small'"></p-button>
+            <mat-icon>copyright</mat-icon>
+            <button matButton>{{date.getFullYear()}}</button>
         </div>
     </ng-template>
 </p-toolbar>

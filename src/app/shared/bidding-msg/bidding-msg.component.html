@@ -1,12 +1,13 @@
 <div id="messages">
-    <button class="btn btn-primary">Send Test Message</button>
-    <h2>Received messages</h2>
-      @for (item of dataMsg; track $index) {
-        <p-card header="Message">
-            <p class="m-0">
-                {{item}}
-            </p>
-        </p-card>
-      }
-  </div>
-  
+  <button class="btn btn-primary">Send Test Message</button>
+  <h2>Received messages</h2>
+  <mat-list role="list">
+    @for (item of dataMsg; track $index) {
+    <mat-list-item role="listitem">
+      <p class="m-0">
+        {{item}}
+      </p>
+    </mat-list-item>
+    }
+  </mat-list>
+</div>

@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { CardModule } from 'primeng/card';
+import {MatListModule} from '@angular/material/list';
+
 
 @Component({
   selector: 'app-bidding-msg',
-  imports: [CommonModule,CardModule],
+  imports: [CommonModule,MatListModule],
   templateUrl: './bidding-msg.component.html',
   styleUrl: './bidding-msg.component.scss'
 })

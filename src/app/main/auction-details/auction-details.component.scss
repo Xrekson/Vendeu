@@ -1,0 +1,409 @@
+.auction-details-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #f5f5f5;
+  min-height: 100vh;
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.navigation-bar {
+  margin-bottom: 2rem;
+  
+  button {
+    font-weight: 500;
+    
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.auction-header {
+  margin-bottom: 2rem;
+  
+  .auction-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a237e;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    
+    @media (max-width: 768px) {
+      font-size: 1.8rem;
+    }
+  }
+  
+  .auction-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    
+    .time-remaining {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      color: #666;
+      
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+      
+      &.ended {
+        color: #f44336;
+      }
+    }
+  }
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.image-section {
+  .image-card {
+    overflow: hidden;
+    
+    ::ng-deep app-material-carousel {
+      .carousel-container {
+        border-radius: 12px;
+        overflow: hidden;
+      }
+    }
+    
+    .image-counter {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.05);
+      margin-top: -1px;
+      
+      .counter-text {
+        font-size: 0.9rem;
+        color: #666;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+mat-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  
+  mat-card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    
+    mat-card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1a237e;
+      margin: 0;
+    }
+  }
+  
+  mat-card-content {
+    padding: 1.5rem;
+  }
+}
+
+.timeline-card {
+  ::ng-deep .mat-stepper-vertical {
+    background: transparent;
+    
+    .mat-step {
+      padding: 0.5rem 0;
+      
+      .mat-step-label {
+        font-weight: 500;
+        color: #666;
+      }
+    }
+    
+    .step-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 0;
+      
+      mat-icon {
+        color: #1a237e;
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+      
+      .step-details {
+        display: flex;
+        flex-direction: column;
+        
+        .step-title {
+          font-weight: 600;
+          color: #333;
+        }
+        
+        .step-time {
+          font-size: 0.9rem;
+          color: #666;
+        }
+      }
+    }
+  }
+  
+  .progress-section {
+    margin-top: 2rem;
+    
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    ::ng-deep .mat-progress-bar {
+      height: 8px;
+      border-radius: 4px;
+      
+      .mat-progress-bar-buffer {
+        background: #e0e0e0;
+      }
+    }
+  }
+}
+
+.bid-info-card {
+  mat-list {
+    mat-list-item {
+      height: 60px;
+      
+      mat-icon {
+        color: #1a237e;
+      }
+      
+      .mat-list-item-title {
+        font-weight: 500;
+        color: #666;
+      }
+      
+      .mat-list-item-line {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+      }
+      
+      .high-bid {
+        color: #4caf50;
+      }
+      
+      .min-bid {
+        color: #ff9800;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+.bid-placement-card {
+  .bid-input-section {
+    .bid-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      
+      .bid-input {
+        flex: 1;
+        
+        ::ng-deep .mat-form-field-wrapper {
+          padding-bottom: 0;
+        }
+      }
+      
+      button {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        
+        mat-icon {
+          font-size: 20px;
+        }
+      }
+    }
+    
+    .bid-actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      
+      .bid-button {
+        flex: 1;
+        height: 48px;
+        font-size: 1rem;
+        font-weight: 600;
+        
+        mat-icon {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+    
+    .bid-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: #666;
+      
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        color: #ff9800;
+      }
+    }
+  }
+}
+
+.details-card {
+  .details-content {
+    p {
+      line-height: 1.6;
+      color: #444;
+      margin-bottom: 1.5rem;
+    }
+    
+    .details-divider {
+      margin: 1.5rem 0;
+    }
+    
+    .additional-details {
+      .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        
+        &:not(:last-child) {
+          border-bottom: 1px solid #f0f0f0;
+        }
+        
+        mat-icon {
+          color: #666;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+        
+        div {
+          display: flex;
+          flex-direction: column;
+          
+          .detail-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+          }
+          
+          .detail-value {
+            font-weight: 500;
+            color: #333;
+          }
+        }
+      }
+    }
+  }
+}
+
+.bids-history-card {
+  margin-top: 2rem;
+  
+  .bid-history-item {
+    &:not(:last-child) {
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    mat-icon {
+      color: #1a237e;
+    }
+    
+    .bid-amount {
+      font-weight: 600;
+      color: #4caf50;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 1rem;
+  
+  p {
+    color: #666;
+    font-size: 1.1rem;
+  }
+}
+
+// Custom chip styles
+::ng-deep .mat-chip.mat-standard-chip {
+  padding: 8px 16px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  
+  &.mat-chip-accent {
+    background-color: #4caf50 !important;
+    color: white !important;
+  }
+  
+  &.mat-chip-warn {
+    background-color: #f44336 !important;
+    color: white !important;
+  }
+}
+
+// Custom snackbar styles
+::ng-deep .success-snackbar {
+  background: #4caf50 !important;
+  color: white !important;
+  
+  .mat-simple-snackbar-action {
+    color: white;
+  }
+}
+
+::ng-deep .error-snackbar {
+  background: #f44336 !important;
+  color: white !important;
+  
+  .mat-simple-snackbar-action {
+    color: white;
+  }
+}

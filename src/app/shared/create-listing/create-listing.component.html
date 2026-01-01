@@ -5,7 +5,7 @@
 
       <!-- Name Field -->
        
-      <div class="p-field mb-3 d-flex flex-column">
+      <mat-form-field class="p-field mb-3 d-flex flex-column">
         <label for="name">Listing Name</label>
         <input 
           id="name" 
@@ -16,7 +16,7 @@
         <p *ngIf="listingForm.get('name')?.invalid && listingForm.get('name')?.touched" class="p-error">
           Name is required
         </p>
-      </div>
+      </mat-form-field>
 
       <!-- Main Image Field (img array) -->
       <!-- <div class="p-field mb-3 d-flex flex-column">

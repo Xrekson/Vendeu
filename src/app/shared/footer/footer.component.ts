@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ToolbarModule } from 'primeng/toolbar';
-import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar'
+import {MatIconModule} from '@angular/material/icon';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatButtonModule} from '@angular/material/button';
+
 
 @Component({
   selector: 'app-footerx',
-  imports: [CommonModule,FontAwesomeModule,ToolbarModule,ButtonModule,AvatarModule],
+  imports: [CommonModule,FontAwesomeModule,MatButtonModule, MatDividerModule, MatIconModule],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
@@ -19,12 +20,12 @@ export class FooterComponent implements OnInit{
     this.checkScrollPosition();
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onResize() {
     this.checkScrollPosition();
   }
 
-  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:scroll')
   onScroll() {
     this.checkScrollPosition();
   }

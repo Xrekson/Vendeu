@@ -1,22 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { DatePickerModule } from 'primeng/datepicker';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
 import { ListingService } from '../../services/listing/listing.service';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 
 @Component({
   selector: 'app-create-listing',
-  imports: [CommonModule,FormsModule,ReactiveFormsModule,InputTextModule,
-    ButtonModule,
-    TextareaModule,
-    DatePickerModule,
-  InputNumberModule,
-InputGroupModule  ],
+  imports: [CommonModule,FormsModule,ReactiveFormsModule,MatInputModule,MatFormFieldModule ],
   templateUrl: './create-listing.component.html',
   styleUrl: './create-listing.component.scss'
 })
