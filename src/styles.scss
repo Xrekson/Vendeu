@@ -1,53 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @use "tailwindcss";
-@import '@angular/material/prebuilt-themes/magenta-violet.css';
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-// Custom snackbar styles
-.success-snackbar {
-  background: #4caf50 !important;
-  color: white !important;
-  
-  .mat-simple-snackbar-action {
-    color: white;
-  }
-}
+@use '@angular/material' as mat;
 
-.error-snackbar {
-  background: #f44336 !important;
-  color: white !important;
-  
-  .mat-simple-snackbar-action {
-    color: white;
-  }
-}
-
-// Better form field focus
-.mat-form-field.mat-focused .mat-form-field-label {
-  color: #1a237e !important;
-}
-
-.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-  color: #1a237e !important;
-}
-
-// Checkbox styling
-.mat-checkbox-checked.mat-accent .mat-checkbox-background {
-  background-color: #1a237e !important;
-}
-
-// Button styling
-.mat-button, .mat-raised-button, .mat-stroked-button {
-  border-radius: 8px !important;
-}
-
-// Card styling
-.mat-card {
-  border-radius: 12px !important;
-}
-
-// Tooltip styling
-.mat-tooltip {
-  font-size: 0.8rem !important;
-  padding: 0.5rem 0.75rem !important;
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color:mat.$violet-palette,
+    typography: Roboto,
+    density: 0
+  ));
 }

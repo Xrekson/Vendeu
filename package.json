@@ -27,6 +27,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@ngrx-addons/persist-state": "^8.0.1",
+    "@ngrx/effects": "^19.0.1",
     "@ngrx/store": "^19.0.1",
     "@stomp/rx-stomp": "^2.0.1",
     "@stomp/stompjs": "^7.1.1",

@@ -21,6 +21,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
+
 
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -60,6 +62,6 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 
     CarouselComponent,
     ConfirmationDialogComponent
-],providers:[AuthService,RouterBackService]
+],providers:[AuthService,RouterBackService,provideNativeDateAdapter()]
 })
 export class MainModule { }

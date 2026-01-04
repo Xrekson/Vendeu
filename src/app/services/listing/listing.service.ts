@@ -22,7 +22,7 @@ private createUrl:string;
   createListing(data: object): Observable<object> {
     return this.http.post(this.createUrl, data);
   }
-  getAllListing(): Observable<object>{
+  getAllListing(): Observable<any>{
     return this.http.get(this.allUrl);
   }
   getListing(ID:any): Observable<any>{

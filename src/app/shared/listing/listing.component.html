@@ -1,77 +1,282 @@
-<!-- listing.component.html -->
-<div class="grid p-4">
-  <div class="col-12">
-    <h1>Current Auctions</h1>
-    <p-divider></p-divider>
-  </div>
-
-  <div class="col-12 md:col-6 lg:col-4" *ngFor="let item of listingData">
-    <p-card [header]="item.name" [subheader]="'Item #' + item.id">
-      <ng-template pTemplate="header">
-        <p-galleria 
-          [value]="item.images" 
-          [responsiveOptions]="responsiveOptions" 
-          [containerStyle]="{'max-width': '100%'}"
-          [circular]="true" 
-          [autoPlay]="true"
-          [showThumbnails]="false"
-          [showIndicators]="true">
-          <ng-template pTemplate="item" let-item>
-            <img [src]="item || 'https://placehold.co/600x400'" [alt]="item.name" class="w-full" style="max-height: 200px; object-fit: cover;"/>
-          </ng-template>
-        </p-galleria>
-      </ng-template>
-
-      <div class="mb-3">
-        <p-tag 
-          [value]="getAuctionStatus(item.auction_end)" 
-          [severity]="getAuctionStatus(item.auction_end) === 'Active' ? 'success' : 'danger'">
-        </p-tag>
-        <span class="ml-2 text-sm">
-            @if (getTimeRemaining(item.auction_end)=="Auction ended") {
-                {{ getTimeRemaining(item.auction_end) }}
-            }@else{
-                <countdown [config]="{ leftTime: item.endTime }" />
-            }
-        </span>
-      </div>
-
-      <p-timeline [value]="[
-        { status: 'Started', date: item.auction_start | date:'short' },
-        { status: 'Ends', date: item.auction_end | date:'short' }
-      ]" align="alternate">
-        <ng-template pTemplate="content" let-event>
-          {{ event.status }}
-        </ng-template>
-        <ng-template pTemplate="opposite" let-event>
-          {{ event.date }}
-        </ng-template>
-      </p-timeline>
-
-      <p-progressBar 
-        [value]="getProgressValue(item.auction_start, item.auction_end)" 
-        [showValue]="false">
-      </p-progressBar>
-
-      <p class="mt-3 line-clamp-2">{{ item.detail }}</p>
-
-      <div class="flex justify-between items-center mt-4">
-        <div>
-          <span class="text-2xl font-bold">${{ item.price }}</span>
-          <span class="text-sm ml-2">(+${{ item.priceInterval }})</span>
-        </div>
-        <div>
-          <span class="block text-sm">Highest bid:</span>
-          <span class="font-bold">${{ item.highestbid || 'No bids yet' }}</span>
+<div class="listing-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">Current Auctions</h1>
+      <p class="page-subtitle">
+        Discover unique items up for auction. Place your bid and win amazing deals!
+      </p>
+    </div>
+    
+    <!-- Stats Overview -->
+    <div class="stats-overview">
+      <div class="stat-item">
+        <mat-icon class="stat-icon">gavel</mat-icon>
+        <div class="stat-content">
+          <span class="stat-number">{{ getTotalAuctions() }}</span>
+          <span class="stat-label">Total Auctions</span>
         </div>
       </div>
-
-      <ng-template pTemplate="footer">
-        <div class="flex gap-2">
-          <p-button icon="pi pi-eye" label="View Details" styleClass="p-button-outlined" (onClick)="getToDetails(item.id)"></p-button>
-          <p-button icon="pi pi-gavel" label="Place Bid" [disabled]="getAuctionStatus(item.auction_end) === 'Ended'"></p-button>
+      <div class="stat-item">
+        <mat-icon class="stat-icon active-icon">bolt</mat-icon>
+        <div class="stat-content">
+          <span class="stat-number">{{ getActiveAuctions() }}</span>
+          <span class="stat-label">Active Now</span>
         </div>
-      </ng-template>
-    </p-card>
+      </div>
+      <div class="stat-item">
+        <mat-icon class="stat-icon">trending_up</mat-icon>
+        <div class="stat-content">
+          <span class="stat-number">{{ filteredData.length }}</span>
+          <span class="stat-label">Showing</span>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <mat-divider class="section-divider"></mat-divider>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-group">
+      <!-- Status Filter -->
+      <div class="filter-control">
+        <mat-button-toggle-group [(value)]="statusFilter" (change)="onStatusFilterChange(statusFilter)">
+          <mat-button-toggle value="all">
+            <mat-icon>all_inclusive</mat-icon>
+            All
+          </mat-button-toggle>
+          <mat-button-toggle value="active">
+            <mat-icon>bolt</mat-icon>
+            Active
+          </mat-button-toggle>
+          <mat-button-toggle value="ended">
+            <mat-icon>event_busy</mat-icon>
+            Ended
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <!-- Price Filter -->
+      <div class="filter-control">
+        <mat-button-toggle-group [(value)]="priceFilter" (change)="onPriceFilterChange(priceFilter)">
+          <mat-button-toggle value="all">All Prices</mat-button-toggle>
+          <mat-button-toggle value="low">Under $1k</mat-button-toggle>
+          <mat-button-toggle value="medium">$1k - $5k</mat-button-toggle>
+          <mat-button-toggle value="high">Over $5k</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <!-- Search Filter -->
+      <div class="search-control">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search auctions</mat-label>
+          <input 
+            matInput 
+            [(ngModel)]="searchTerm" 
+            (ngModelChange)="onSearchChange($event)"
+            placeholder="Search by name, description, or category"
+          >
+          <mat-icon matPrefix>search</mat-icon>
+          <button 
+            mat-icon-button 
+            matSuffix 
+            *ngIf="searchTerm"
+            (click)="searchTerm = ''; applyFilters()"
+          >
+            <mat-icon>clear</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <!-- Clear Filters -->
+      <button 
+        mat-stroked-button 
+        color="primary" 
+        class="clear-btn"
+        (click)="clearFilters()"
+        [disabled]="statusFilter === 'all' && priceFilter === 'all' && !searchTerm"
+      >
+        <mat-icon>filter_alt_off</mat-icon>
+        Clear Filters
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Loading auctions...</p>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading && filteredData.length === 0) {
+    <div class="empty-state">
+      <mat-icon class="empty-icon">search_off</mat-icon>
+      <h3>No auctions found</h3>
+      <p>Try adjusting your filters or search term</p>
+      <button 
+        mat-raised-button 
+        color="primary"
+        (click)="clearFilters()"
+      >
+        Clear all filters
+      </button>
+    </div>
+  }
+
+  <!-- Auction Grid -->
+  @if (!isLoading && filteredData.length > 0) {
+    <mat-grid-list [cols]="gridCols" [gutterSize]="'24px'" class="auction-grid">
+      @for (item of filteredData; track item.id) {
+        <mat-grid-tile>
+          <mat-card class="auction-card" [class.ending-soon]="isEndingSoon(item.auction_end)">
+            <!-- Card Header -->
+            <mat-card-header>
+              <div class="card-header-content">
+                <div class="auction-title-section">
+                  <h2 class="auction-title" matTooltip="{{ item.name }}">
+                    {{ item.name }}
+                  </h2>
+                  <span class="auction-id">#{{ item.id }}</span>
+                </div>
+                <mat-chip 
+                  [color]="getAuctionStatusColor(item.auction_end)" 
+                  selected
+                  class="status-chip"
+                >
+                  {{ getAuctionStatus(item.auction_end) }}
+                  @if (isEndingSoon(item.auction_end)) {
+                    <mat-icon class="chip-icon">warning</mat-icon>
+                  }
+                </mat-chip>
+              </div>
+            </mat-card-header>
+
+            <!-- Image Carousel -->
+            <div class="image-container">
+              <app-carousel
+                [products]="item.carouselImages"
+                [autoSlide]="false"
+                [slideInterval]="5000"
+                [showIndicators]="true"
+                [showNavigation]="true"
+                [showThumbnails]="false"
+                [height]="'200px'"
+                [borderRadius]="'8px 8px 0 0'"
+                [cardMode]="true"
+              >
+              </app-carousel>
+              
+              <!-- Ending Soon Badge -->
+              @if (isEndingSoon(item.auction_end)) {
+                <div class="ending-soon-badge" matTooltip="Ending soon!">
+                  <mat-icon>schedule</mat-icon>
+                  <span>{{ getTimeRemaining(item.auction_end) }}</span>
+                </div>
+              }
+            </div>
+
+            <!-- Card Content -->
+            <mat-card-content>
+              <!-- Auction Timeline -->
+              <div class="timeline-section">
+                <div class="timeline-item">
+                  <mat-icon class="timeline-icon">play_circle</mat-icon>
+                  <div class="timeline-details">
+                    <span class="timeline-label">Started</span>
+                    <span class="timeline-date">{{ formatDate(item.auction_start) }}</span>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <mat-icon class="timeline-icon">stop_circle</mat-icon>
+                  <div class="timeline-details">
+                    <span class="timeline-label">Ends</span>
+                    <span class="timeline-date">{{ formatDate(item.auction_end) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="progress-section">
+                <div class="progress-info">
+                  <span class="progress-label">Time Progress</span>
+                  <span class="progress-value">{{ getProgressValue(item.auction_start, item.auction_end).toFixed(0) }}%</span>
+                </div>
+                <mat-progress-bar 
+                  mode="determinate" 
+                  [value]="getProgressValue(item.auction_start, item.auction_end)"
+                  color="primary"
+                ></mat-progress-bar>
+              </div>
+
+              <!-- Description -->
+              <p class="auction-description" matTooltip="{{ item.detail }}">
+                {{ item.detail.length > 100 ? item.detail.substring(0, 100) + '...' : item.detail }}
+              </p>
+
+              <!-- Price Information -->
+              <div class="price-section">
+                <div class="price-item">
+                  <span class="price-label">Starting Price</span>
+                  <span class="price-value">{{ formatCurrency(item.price) }}</span>
+                </div>
+                <div class="price-item">
+                  <span class="price-label">Bid Increment</span>
+                  <span class="price-value">{{ formatCurrency(item.priceInterval) }}</span>
+                </div>
+                <div class="price-item highlight">
+                  <span class="price-label">Highest Bid</span>
+                  <span class="price-value">
+                    {{ item.highestbid > 0 ? formatCurrency(item.highestbid) : 'No bids yet' }}
+                  </span>
+                </div>
+              </div>
+            </mat-card-content>
+
+            <!-- Card Actions -->
+            <mat-card-actions align="end" class="card-actions">
+              <button 
+                mat-button 
+                color="primary" 
+                class="action-btn"
+                (click)="getToDetails(item.id)"
+              >
+                <mat-icon>visibility</mat-icon>
+                View Details
+              </button>
+              <button 
+                mat-raised-button 
+                color="accent" 
+                class="bid-btn"
+                (click)="getToDetails(item.id)"
+                [disabled]="getAuctionStatus(item.auction_end) === 'Ended'"
+                matTooltip="View details to place bid"
+              >
+                <mat-icon>gavel</mat-icon>
+                Place Bid
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </mat-grid-tile>
+      }
+    </mat-grid-list>
+  }
+
+  <!-- Load More / Pagination -->
+  @if (!isLoading && filteredData.length > 0) {
+    <div class="load-more-section">
+      <button 
+        mat-button 
+        color="primary"
+        class="load-more-btn"
+        (click)="loadAuctions()"
+      >
+        <mat-icon>refresh</mat-icon>
+        Refresh Auctions
+      </button>
+    </div>
+  }
 </div>

@@ -1,71 +1,40 @@
 <div class="register-container" @fadeIn>
   <mat-card class="register-card">
     <!-- Header Section -->
-    <div class="register-header">
-      <div class="logo-section">
+    <div class="register-header flex flex-col">
+      <div class="logo-section grow text-center">
         <div class="logo-icon">
           <mat-icon>person_add</mat-icon>
         </div>
-        <h1 class="app-title">Create Account</h1>
       </div>
-      <p class="welcome-text">Join our community in just a few steps</p>
+      <h1 class="app-title text-center grow">Create Account</h1>
+      <p class="welcome-text grow text-center">Join our community in just a few steps</p>
     </div>
 
     <!-- Registration Form -->
     <div class="register-content" @slideIn>
       <mat-stepper [linear]="isLinear" [selectedIndex]="currentStep">
-        
+
         <!-- Step 1: Personal Information -->
         <mat-step [stepControl]="actorForm" [completed]="actorForm.get('name')?.valid && 
                                                          actorForm.get('username')?.valid && 
                                                          actorForm.get('email')?.valid && 
                                                          actorForm.get('dob')?.valid">
           <ng-template matStepLabel>Personal Info</ng-template>
-          
-          <form [formGroup]="actorForm">
-            <div class="step-content">
-              <div class="form-grid">
-                <!-- Name Field -->
-                <mat-form-field appearance="outline" class="form-field">
-                  <mat-label>Full Name</mat-label>
-                  <input 
-                    matInput 
-                    formControlName="name"
-                    placeholder="Enter your full name"
-                    autocomplete="name"
-                  >
-                  <mat-icon matPrefix>person</mat-icon>
-                  
-                  <mat-hint *ngIf="name?.valid && name?.touched">
-                    ✓ Valid name
-                  </mat-hint>
-                  
-                  <mat-error *ngIf="name?.hasError('required') && (name?.dirty || name?.touched)">
-                    Full name is required
-                  </mat-error>
-                  <mat-error *ngIf="name?.hasError('pattern') && (name?.dirty || name?.touched)">
-                    Name can only contain letters and spaces
-                  </mat-error>
-                  <mat-error *ngIf="name?.hasError('maxlength') && (name?.dirty || name?.touched)">
-                    Name cannot exceed 100 characters
-                  </mat-error>
-                </mat-form-field>
 
+          <form [formGroup]="actorForm">
+            <div class="step-content justify-center">
+              <div class="grid grid-cols-3 gap-4">
                 <!-- Username Field -->
-                <mat-form-field appearance="outline" class="form-field">
+                <mat-form-field class="col-span-3 md:col-span-2 lg:col-span-1">
                   <mat-label>Username</mat-label>
-                  <input 
-                    matInput 
-                    formControlName="username"
-                    placeholder="Choose a username"
-                    autocomplete="username"
-                  >
-                  <mat-icon matPrefix>alternate_email</mat-icon>
-                  
+                  <input matInput formControlName="username" placeholder="Choose a username" autocomplete="username">
+                  <mat-icon matSuffix>alternate_email</mat-icon>
+
                   <mat-hint *ngIf="username?.valid && username?.touched">
                     ✓ Username available
                   </mat-hint>
-                  
+
                   <mat-error *ngIf="username?.hasError('required') && (username?.dirty || username?.touched)">
                     Username is required
                   </mat-error>
@@ -78,21 +47,16 @@
                 </mat-form-field>
 
                 <!-- Email Field -->
-                <mat-form-field appearance="outline" class="form-field">
+                <mat-form-field class="col-span-3 md:col-span-2 lg:col-span-1">
                   <mat-label>Email Address</mat-label>
-                  <input 
-                    matInput 
-                    type="email"
-                    formControlName="email"
-                    placeholder="Enter your email"
-                    autocomplete="email"
-                  >
-                  <mat-icon matPrefix>email</mat-icon>
-                  
+                  <input matInput type="email" formControlName="email" placeholder="Enter your email"
+                    autocomplete="email">
+                  <mat-icon matSuffix>email</mat-icon>
+
                   <mat-hint *ngIf="email?.valid && email?.touched">
                     ✓ Valid email format
                   </mat-hint>
-                  
+
                   <mat-error *ngIf="email?.hasError('required') && (email?.dirty || email?.touched)">
                     Email is required
                   </mat-error>
@@ -101,43 +65,51 @@
                   </mat-error>
                 </mat-form-field>
 
+                <!-- Name Field -->
+                <mat-form-field class="col-span-3 md:col-span-2 lg:col-span-1">
+                  <mat-label>Full Name</mat-label>
+                  <input matInput formControlName="name" placeholder="Enter your full name" autocomplete="name">
+                  <mat-icon matSuffix>person</mat-icon>
+
+                  <mat-hint *ngIf="name?.valid && name?.touched">
+                    ✓ Valid name
+                  </mat-hint>
+
+                  <mat-error *ngIf="name?.hasError('required') && (name?.dirty || name?.touched)">
+                    Full name is required
+                  </mat-error>
+                  <mat-error *ngIf="name?.hasError('pattern') && (name?.dirty || name?.touched)">
+                    Name can only contain letters and spaces
+                  </mat-error>
+                  <mat-error *ngIf="name?.hasError('maxlength') && (name?.dirty || name?.touched)">
+                    Name cannot exceed 100 characters
+                  </mat-error>
+                </mat-form-field>
+
                 <!-- Date of Birth Field -->
-                <mat-form-field appearance="outline" class="form-field">
+                <mat-form-field class="col-span-3 md:col-span-2 lg:col-span-1">
                   <mat-label>Date of Birth</mat-label>
-                  <input 
-                    matInput 
-                    [matDatepicker]="picker"
-                    formControlName="dob"
-                    [max]="maxDate"
-                    [min]="minDate"
-                    placeholder="Select your date of birth"
-                  >
+                  <input matInput [matDatepicker]="picker" formControlName="dob" [max]="maxDate" [min]="minDate"
+                    placeholder="Select your date of birth">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
-                  <mat-icon matPrefix>calendar_today</mat-icon>
-                  
                   <mat-hint>Must be 18+ years old</mat-hint>
-                  
+
                   <mat-error *ngIf="dob?.hasError('required') && (dob?.dirty || dob?.touched)">
                     Date of birth is required
                   </mat-error>
                 </mat-form-field>
 
                 <!-- Mobile Number Field -->
-                <mat-form-field appearance="outline" class="form-field">
+                <mat-form-field class="col-span-3 md:col-span-2 lg:col-span-1">
                   <mat-label>Mobile Number</mat-label>
-                  <input 
-                    matInput 
-                    formControlName="mobileno"
-                    placeholder="Enter 10-digit mobile number"
-                    maxlength="10"
-                  >
-                  <mat-icon matPrefix>phone</mat-icon>
-                  
+                  <input matInput formControlName="mobileno" placeholder="Enter 10-digit mobile number" maxlength="10">
+                  <mat-icon matSuffix>phone</mat-icon>
+
                   <mat-hint *ngIf="mobileno?.valid && mobileno?.touched">
                     ✓ Valid mobile number
                   </mat-hint>
-                  
+
                   <mat-error *ngIf="mobileno?.hasError('required') && (mobileno?.dirty || mobileno?.touched)">
                     Mobile number is required
                   </mat-error>
@@ -145,19 +117,16 @@
                     Please enter a valid 10-digit mobile number
                   </mat-error>
                 </mat-form-field>
+
+                <div class="step-actions m-auto col-span-3 md:col-span-2 lg:col-span-1">
+                  <button mat-button color="primary" (click)="nextStep()"
+                    [disabled]="!name?.valid || !username?.valid || !email?.valid || !dob?.valid || !mobileno?.valid">
+                    Next: Account Setup
+                    <mat-icon>arrow_forward</mat-icon>
+                  </button>
+                </div>
               </div>
 
-              <div class="step-actions">
-                <button 
-                  mat-button 
-                  color="primary"
-                  (click)="nextStep()"
-                  [disabled]="!name?.valid || !username?.valid || !email?.valid || !dob?.valid || !mobileno?.valid"
-                >
-                  Next: Account Setup
-                  <mat-icon>arrow_forward</mat-icon>
-                </button>
-              </div>
             </div>
           </form>
         </mat-step>
@@ -166,65 +135,83 @@
         <mat-step [stepControl]="actorForm" [completed]="actorForm.get('password')?.valid && 
                                                          actorForm.get('confirmPassword')?.valid">
           <ng-template matStepLabel>Account Setup</ng-template>
-          
-          <div class="step-content">
-            <div class="form-grid">
+
+          <div class="step-content" [formGroup]="actorForm">
+            <div class="grid grid-cols-3 gap-4">
               <!-- Password Field -->
-              <mat-form-field appearance="outline" class="form-field password-field">
+              <mat-form-field class="form-field password-field">
                 <mat-label>Password</mat-label>
-                <input 
-                  matInput 
-                  [type]="showPassword ? 'text' : 'password'"
-                  formControlName="password"
-                  placeholder="Create a strong password"
-                  autocomplete="new-password"
-                >
-                <mat-icon matPrefix>lock</mat-icon>
-                
-                <button 
-                  mat-icon-button 
-                  matSuffix 
-                  type="button"
-                  (click)="showPassword = !showPassword"
-                  [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-                >
+                <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                  placeholder="Create a strong password" autocomplete="new-password">
+
+                <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword"
+                  [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
                   <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
-                
-                <mat-hint *ngIf="password?.value">
+
+                <div *ngIf="password?.value">
                   <div class="password-strength">
                     <span>Strength: </span>
                     <span [style.color]="getPasswordStrengthColor(calculatePasswordStrength(password?.value))">
                       {{ getPasswordStrengthText(calculatePasswordStrength(password?.value)) }}
                     </span>
                     <div class="strength-bar">
-                      <div 
-                        class="strength-fill"
-                        [style.width]="calculatePasswordStrength(password?.value) + '%'"
-                        [style.background]="getPasswordStrengthColor(calculatePasswordStrength(password?.value))"
-                      ></div>
+                      <div class="strength-fill" [style.width]="calculatePasswordStrength(password?.value) + '%'"
+                        [style.background]="getPasswordStrengthColor(calculatePasswordStrength(password?.value))"></div>
                     </div>
                   </div>
-                  
-                  <div class="password-requirements">
-                    <span [class.requirement-met]="checkRegex('/(?=.*[a-z])/',password?.value)">
+
+                </div>
+                <mat-hint class="text-nowrap">
+                  <div class="password-requirements flex flex-col">
+                    @if (!checkRegex('/(?=.*[a-z])/',password?.value)) {
+                    <span>
                       ✓ At least one lowercase letter
                     </span>
-                    <span [class.requirement-met]="checkRegex('/(?=.*[A-Z])/',password?.value)">
+                    }@else {
+                      <span class="line-through">
+                        At least one lowercase letter
+                      </span>
+                    }
+                    @if (!checkRegex('/(?=.*[A-Z])/',password?.value)) {
+                    <span>
                       ✓ At least one uppercase letter
                     </span>
-                    <span [class.requirement-met]="checkRegex('/(?=.*\d)/',password?.value)">
+                    }@else {
+                      <span class="line-through">
+                        At least one uppercase letter
+                      </span>
+                    }
+                    @if (!checkRegex('/(?=.*\d)/',password?.value)) {
+                    <span>
                       ✓ At least one number
                     </span>
-                    <span [class.requirement-met]="checkRegex('/(?=.*[@$!%*?&])/',password?.value)">
-                      ✓ At least one special character (@$!%*?&)
+                    }@else {
+                      <span class="line-through">
+                        At least one number
+                      </span>
+                    }
+                    @if (!checkRegex('/(?=.*[@$!%*?&])/',password?.value)) {
+                    <span>
+                      ✓ At least one special character (&#64;!%*?&)
                     </span>
-                    <span [class.requirement-met]="password?.value?.length >= 8">
+                    }@else {
+                      <span class="line-through">
+                        At least one special character (&#64;!%*?&)
+                      </span>
+                    }
+                    @if (password?.value?.length >= 8) {
+                    <span>
                       ✓ Minimum 8 characters
                     </span>
+                    }@else {
+                      <span class="line-through">
+                        Minimum 8 characters
+                      </span>
+                    }
                   </div>
                 </mat-hint>
-                
+
                 <mat-error *ngIf="password?.hasError('required') && (password?.dirty || password?.touched)">
                   Password is required
                 </mat-error>
@@ -237,54 +224,36 @@
               </mat-form-field>
 
               <!-- Confirm Password Field -->
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field>
                 <mat-label>Confirm Password</mat-label>
-                <input 
-                  matInput 
-                  [type]="showConfirmPassword ? 'text' : 'password'"
-                  formControlName="confirmPassword"
-                  placeholder="Confirm your password"
-                  autocomplete="new-password"
-                >
-                <mat-icon matPrefix>lock_reset</mat-icon>
-                
-                <button 
-                  mat-icon-button 
-                  matSuffix 
-                  type="button"
-                  (click)="showConfirmPassword = !showConfirmPassword"
-                  [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'"
-                >
+                <input matInput [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
+                  placeholder="Confirm your password" autocomplete="new-password">
+
+                <button mat-icon-button matSuffix type="button" (click)="showConfirmPassword = !showConfirmPassword"
+                  [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'">
                   <mat-icon>{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
-                
-                <mat-error *ngIf="confirmPassword?.hasError('required') && (confirmPassword?.dirty || confirmPassword?.touched)">
+
+                <mat-error
+                  *ngIf="confirmPassword?.hasError('required') && (confirmPassword?.dirty || confirmPassword?.touched)">
                   Please confirm your password
                 </mat-error>
                 <mat-error *ngIf="actorForm.hasError('passwordMismatch') && confirmPassword?.touched">
                   Passwords do not match
                 </mat-error>
               </mat-form-field>
-            </div>
 
-            <div class="step-actions">
-              <button 
-                mat-button 
-                color="primary"
-                (click)="prevStep()"
-              >
-                <mat-icon>arrow_back</mat-icon>
-                Back
-              </button>
-              <button 
-                mat-button 
-                color="primary"
-                (click)="nextStep()"
-                [disabled]="!password?.valid || !confirmPassword?.valid"
-              >
-                Next: Additional Info
-                <mat-icon>arrow_forward</mat-icon>
-              </button>
+              <div class="step-actions m-auto col-start-1 col-end-4 flex justify-between">
+                <button mat-button color="primary" (click)="prevStep()">
+                  <mat-icon>arrow_back</mat-icon>
+                  Back
+                </button>
+                <button mat-button color="primary" (click)="nextStep()"
+                  [disabled]="!password?.valid || !confirmPassword?.valid">
+                  Next: Additional Info
+                  <mat-icon>arrow_forward</mat-icon>
+                </button>
+              </div>
             </div>
           </div>
         </mat-step>
@@ -294,34 +263,30 @@
                                                          actorForm.get('deg')?.valid && 
                                                          actorForm.get('about')?.valid">
           <ng-template matStepLabel>Additional Info</ng-template>
-          
-          <div class="step-content">
+
+          <div class="step-content" [formGroup]="actorForm">
             <div class="form-grid">
               <!-- User Type Field -->
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field>
                 <mat-label>User Type</mat-label>
                 <mat-select formControlName="type" placeholder="Select user type">
                   <mat-option *ngFor="let type of userType" [value]="type">
                     {{ type.name }}
                   </mat-option>
                 </mat-select>
-                <mat-icon matPrefix>person_pin</mat-icon>
-                
+                <mat-icon matSuffix>person_pin</mat-icon>
+
                 <mat-error *ngIf="type?.hasError('required') && (type?.dirty || type?.touched)">
                   Please select a user type
                 </mat-error>
               </mat-form-field>
 
               <!-- Position Field -->
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field>
                 <mat-label>Position/Title</mat-label>
-                <input 
-                  matInput 
-                  formControlName="deg"
-                  placeholder="Enter your position or title"
-                >
-                <mat-icon matPrefix>work</mat-icon>
-                
+                <input matInput formControlName="deg" placeholder="Enter your position or title">
+                <mat-icon matSuffix>work</mat-icon>
+
                 <mat-error *ngIf="deg?.hasError('required') && (deg?.dirty || deg?.touched)">
                   Position is required
                 </mat-error>
@@ -331,18 +296,14 @@
               </mat-form-field>
 
               <!-- About Field -->
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field>
                 <mat-label>About Yourself</mat-label>
-                <textarea 
-                  matInput 
-                  formControlName="about"
-                  placeholder="Tell us about yourself (20-255 characters)"
-                  rows="4"
-                ></textarea>
-                <mat-icon matPrefix>description</mat-icon>
-                
+                <textarea matInput formControlName="about" placeholder="Tell us about yourself (20-255 characters)"
+                  rows="4"></textarea>
+                <mat-icon matSuffix>description</mat-icon>
+
                 <mat-hint>{{ about?.value?.length || 0 }}/255 characters</mat-hint>
-                
+
                 <mat-error *ngIf="about?.hasError('required') && (about?.dirty || about?.touched)">
                   About section is required
                 </mat-error>
@@ -356,20 +317,12 @@
             </div>
 
             <div class="step-actions">
-              <button 
-                mat-button 
-                color="primary"
-                (click)="prevStep()"
-              >
+              <button mat-button color="primary" (click)="prevStep()">
                 <mat-icon>arrow_back</mat-icon>
                 Back
               </button>
-              <button 
-                mat-button 
-                color="primary"
-                (click)="nextStep()"
-                [disabled]="!type?.valid || !deg?.valid || !about?.valid"
-              >
+              <button mat-button color="primary" (click)="nextStep()"
+                [disabled]="!type?.valid || !deg?.valid || !about?.valid">
                 Next: Review & Submit
                 <mat-icon>arrow_forward</mat-icon>
               </button>
@@ -380,11 +333,11 @@
         <!-- Step 4: Review & Submit -->
         <mat-step [stepControl]="actorForm" [completed]="actorForm.get('acceptTerms')?.valid">
           <ng-template matStepLabel>Review & Submit</ng-template>
-          
-          <div class="step-content">
+
+          <div class="step-content" [formGroup]="actorForm">
             <div class="review-section">
               <h3>Review Your Information</h3>
-              
+
               <div class="review-grid">
                 <div class="review-item">
                   <span class="review-label">Full Name:</span>
@@ -400,7 +353,8 @@
                 </div>
                 <div class="review-item">
                   <span class="review-label">Date of Birth:</span>
-                  <span class="review-value">{{ dob?.value ? (dob?.value | date: 'mediumDate') : 'Not provided' }}</span>
+                  <span class="review-value">{{ dob?.value ? (dob?.value | date: 'mediumDate') : 'Not provided'
+                    }}</span>
                 </div>
                 <div class="review-item">
                   <span class="review-label">Mobile:</span>
@@ -418,15 +372,15 @@
 
               <!-- Terms & Conditions -->
               <mat-divider></mat-divider>
-              
+
               <div class="terms-section">
                 <mat-checkbox formControlName="acceptTerms" color="primary">
-                  I agree to the 
-                  <a href="#" class="terms-link">Terms of Service</a> 
-                  and 
+                  I agree to the
+                  <a href="#" class="terms-link">Terms of Service</a>
+                  and
                   <a href="#" class="terms-link">Privacy Policy</a>
                 </mat-checkbox>
-                
+
                 <mat-error *ngIf="acceptTerms?.hasError('required') && acceptTerms?.touched">
                   You must accept the terms and conditions
                 </mat-error>
@@ -434,28 +388,19 @@
             </div>
 
             <div class="step-actions">
-              <button 
-                mat-button 
-                color="primary"
-                (click)="prevStep()"
-              >
+              <button mat-button color="primary" (click)="prevStep()">
                 <mat-icon>arrow_back</mat-icon>
                 Back
               </button>
-              <button 
-                mat-raised-button 
-                color="primary"
-                class="submit-button"
-                (click)="submitForm()"
-                [disabled]="isLoading || actorForm.invalid"
-              >
+              <button mat-raised-button color="primary" class="submit-button" (click)="submitForm()"
+                [disabled]="isLoading || actorForm.invalid">
                 <div class="button-content">
                   @if (isLoading) {
-                    <mat-spinner diameter="20" class="loading-spinner"></mat-spinner>
-                    <span>Creating Account...</span>
+                  <mat-spinner diameter="20" class="loading-spinner"></mat-spinner>
+                  <span>Creating Account...</span>
                   } @else {
-                    <mat-icon>how_to_reg</mat-icon>
-                    <span>Create Account</span>
+                  <mat-icon>how_to_reg</mat-icon>
+                  <span>Create Account</span>
                   }
                 </div>
               </button>
@@ -466,14 +411,9 @@
       </mat-stepper>
 
       <!-- Already have an account -->
-      <div class="login-link-section">
-        <p>Already have an account?</p>
-        <button 
-          mat-stroked-button 
-          color="primary"
-          class="login-button"
-          (click)="goToLogin()"
-        >
+      <div class="login-link-section m-2 flex flex-col">
+        <p class="leading-none text-center">Already have an account?</p>
+        <button mat-stroked-button color="primary" class="login-button m-1" (click)="goToLogin()">
           <mat-icon>login</mat-icon>
           Sign In
         </button>

@@ -154,7 +154,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             id: data.id,
             token: data.token,
             username: data.username,
-            type: data.type
+            type: data.type,
+            isAuthenticated: true
           };
           
           this.store.dispatch(updateSession({ session: sessionData }));

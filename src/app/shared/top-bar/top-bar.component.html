@@ -1,19 +1,343 @@
-<p-toolbar [style]="{ 'border-radius': '1.5rem', 'margin': '1rem 1rem 1rem 1.5rem' }">
-    <ng-template #start>
-        <div class="flex items-center gap-2">
-            <p-button [routerLink]="'home'" label="Home" text plain />
-            <!-- <p-button label="Edit" text plain /> -->
-        </div>
-    </ng-template>
-    
-    <ng-template #end>
-        <div class="flex items-center gap-2">
-            <a [routerLink]="'login'" class="p-button font-bold">
-                Login
-            </a>
-            <a [routerLink]="'register'"  class="p-button font-bold">
-                Register
-            </a>
-        </div>
-    </ng-template>
-</p-toolbar>
+<mat-toolbar class="custom-toolbar" color="primary" *ngIf="!(isLoading && !userProfile)">
+  <!-- Start Section -->
+  <div class="toolbar-start">
+    <!-- Logo / Brand -->
+    <div class="brand-section" (click)="navigateTo(getHomeLink())" role="button" tabindex="0">
+      <div class="logo-container">
+        <mat-icon class="logo-icon">gavel</mat-icon>
+        <span class="logo-text">AuctionHub</span>
+      </div>
+    </div>
+
+    <!-- Navigation Links (Visible when logged in) -->
+    @if (userProfile) {
+      <nav class="nav-links">
+        <button 
+          mat-button 
+          [routerLink]="'/dash'" 
+          [class.active]="isActiveRoute('/dash') || isActiveRoute('/home')"
+          class="nav-link"
+          matTooltip="Dashboard"
+        >
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+        
+        <button 
+          mat-button 
+          [routerLink]="'/listings'" 
+          [class.active]="isActiveRoute('/listings') || isActiveRoute('/auctions')"
+          class="nav-link"
+          matTooltip="Browse Auctions"
+        >
+          <mat-icon>search</mat-icon>
+          Discover
+        </button>
+        
+        <button 
+          mat-button 
+          [routerLink]="'/my-bids'" 
+          [class.active]="isActiveRoute('/my-bids')"
+          class="nav-link"
+          matTooltip="My Bids"
+        >
+          <mat-icon>gavel</mat-icon>
+          My Bids
+        </button>
+        
+        <button 
+          mat-button 
+          [routerLink]="'/watchlist'" 
+          [class.active]="isActiveRoute('/watchlist')"
+          class="nav-link"
+          matTooltip="Watchlist"
+        >
+          <mat-icon>bookmark</mat-icon>
+          Watchlist
+        </button>
+        
+        @if (hasRole('seller') || hasRole('admin')) {
+          <button 
+            mat-button 
+            [routerLink]="'/my-auctions'" 
+            [class.active]="isActiveRoute('/my-auctions')"
+            class="nav-link"
+            matTooltip="My Auctions"
+          >
+            <mat-icon>inventory</mat-icon>
+            My Auctions
+          </button>
+        }
+        
+        @if (hasRole('admin')) {
+          <button 
+            mat-button 
+            [routerLink]="'/admin'" 
+            [class.active]="isActiveRoute('/admin')"
+            class="nav-link admin-link"
+            matTooltip="Admin Panel"
+          >
+            <mat-icon>admin_panel_settings</mat-icon>
+            Admin
+          </button>
+        }
+      </nav>
+    }
+  </div>
+
+  <!-- End Section -->
+  <div class="toolbar-end">
+    @if (!userProfile) {
+      <!-- Guest User Menu -->
+      <div class="guest-actions">
+        <button 
+          mat-button 
+          [routerLink]="'/login'" 
+          [queryParams]="{ returnUrl: currentRoute }"
+          class="login-btn"
+          [class.active]="isActiveRoute('/login')"
+        >
+          <mat-icon>login</mat-icon>
+          Login
+        </button>
+        
+        <button 
+          mat-raised-button 
+          color="accent" 
+          [routerLink]="'/register'" 
+          class="register-btn"
+        >
+          <mat-icon>person_add</mat-icon>
+          Register
+        </button>
+      </div>
+    } @else {
+      <!-- Logged-in User Menu -->
+      <div class="user-actions">
+        <!-- Search Button (Optional) -->
+        <button 
+          mat-icon-button 
+          [routerLink]="'/listings'"
+          matTooltip="Search Auctions"
+        >
+          <mat-icon>search</mat-icon>
+        </button>
+
+        <!-- Notifications -->
+        <button 
+          mat-icon-button 
+          [matMenuTriggerFor]="notificationsMenu"
+          [matBadge]="notificationCount"
+          matBadgeColor="warn"
+          matBadgeSize="small"
+          matTooltip="Notifications"
+        >
+          <mat-icon>notifications</mat-icon>
+        </button>
+
+        <mat-menu #notificationsMenu="matMenu" class="notifications-menu">
+          <!-- Notifications Header -->
+          <div class="notifications-header">
+            <h3>Notifications</h3>
+            @if (notificationCount > 0) {
+              <button 
+                mat-button 
+                color="primary" 
+                (click)="markAllNotificationsAsRead()"
+                class="mark-all-read"
+              >
+                Mark all read
+              </button>
+            }
+          </div>
+          
+          <mat-divider></mat-divider>
+          
+          <!-- Notifications List -->
+          <div class="notifications-list">
+            @if (getUnreadNotifications().length > 0) {
+              @for (notification of getUnreadNotifications(); track notification.id) {
+                <button mat-menu-item class="notification-item">
+                  <div class="notification-content">
+                    <mat-icon [color]="getNotificationColor(notification.type)" class="notification-icon">
+                      {{ getNotificationIcon(notification.type) }}
+                    </mat-icon>
+                    <div class="notification-details">
+                      <span class="notification-message">{{ notification.message }}</span>
+                      <span class="notification-time">{{ notification.time }}</span>
+                    </div>
+                  </div>
+                  <button 
+                    mat-icon-button 
+                    class="clear-notification"
+                    (click)="clearNotification(notification.id); $event.stopPropagation()"
+                    matTooltip="Clear"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </button>
+              }
+            } @else {
+              <div class="no-notifications">
+                <mat-icon class="empty-icon">notifications_none</mat-icon>
+                <p>No new notifications</p>
+              </div>
+            }
+          </div>
+          
+          <mat-divider></mat-divider>
+          
+          <!-- View All Notifications -->
+          <button mat-menu-item [routerLink]="'/notifications'">
+            <mat-icon>notifications_active</mat-icon>
+            <span>View all notifications</span>
+          </button>
+        </mat-menu>
+
+        <!-- User Profile Menu -->
+        <button 
+          mat-button 
+          [matMenuTriggerFor]="userMenu"
+          class="user-menu-btn"
+          (click)="toggleMenu()"
+        >
+          <div class="user-info">
+            @if (userProfile.avatar) {
+              <img 
+                [src]="userProfile.avatar" 
+                [alt]="getDisplayName()" 
+                class="user-avatar" 
+              />
+            } @else {
+              <div class="avatar-placeholder">
+                <mat-icon>person</mat-icon>
+              </div>
+            }
+            <div class="user-details">
+              <span class="user-name">{{ getDisplayName() }}</span>
+              <span class="user-role">{{ userProfile.role | titlecase }}</span>
+            </div>
+            <mat-icon>{{ isMenuOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}</mat-icon>
+          </div>
+        </button>
+
+        <mat-menu #userMenu="matMenu" class="user-profile-menu">
+          <!-- User Info Section -->
+          <div class="user-menu-header">
+            <div class="user-menu-avatar">
+              @if (userProfile.avatar) {
+                <img [src]="userProfile.avatar" [alt]="getDisplayName()" />
+              } @else {
+                <div class="menu-avatar-placeholder">
+                  <mat-icon>person</mat-icon>
+                </div>
+              }
+            </div>
+            <div class="user-menu-info">
+              <h3>{{ getDisplayName() }}</h3>
+              <p>{{ userProfile.email || userProfile.username }}</p>
+              <mat-chip color="primary" class="user-menu-role">
+                {{ userProfile.role | titlecase }}
+              </mat-chip>
+              @if (!isTokenValid()) {
+                <mat-chip color="warn" class="token-warning">
+                  <mat-icon>warning</mat-icon>
+                  Session expired
+                </mat-chip>
+              }
+            </div>
+          </div>
+          
+          <mat-divider></mat-divider>
+          
+          <!-- Quick Actions -->
+          <button mat-menu-item (click)="openProfile()">
+            <mat-icon>account_circle</mat-icon>
+            <span>My Profile</span>
+          </button>
+          
+          <button mat-menu-item (click)="openMyBids()">
+            <mat-icon>gavel</mat-icon>
+            <span>My Bids</span>
+            @if (notificationCount > 0) {
+              <span class="menu-badge">{{ notificationCount }}</span>
+            }
+          </button>
+          
+          <button mat-menu-item (click)="openWatchlist()">
+            <mat-icon>bookmark</mat-icon>
+            <span>Watchlist</span>
+          </button>
+          
+          <button mat-menu-item (click)="openMyAuctions()">
+            <mat-icon>inventory</mat-icon>
+            <span>My Auctions</span>
+          </button>
+          
+          <mat-divider></mat-divider>
+          
+          <!-- Settings Section -->
+          <button mat-menu-item (click)="openSettings()">
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </button>
+          
+          @if (!isTokenValid()) {
+            <button mat-menu-item (click)="refreshToken()" color="warn">
+              <mat-icon>refresh</mat-icon>
+              <span>Refresh Session</span>
+            </button>
+          }
+          
+          @if (hasRole('admin')) {
+            <mat-divider></mat-divider>
+            <button mat-menu-item [routerLink]="'/admin/dashboard'">
+              <mat-icon>admin_panel_settings</mat-icon>
+              <span>Admin Dashboard</span>
+            </button>
+            
+            <button mat-menu-item [routerLink]="'/admin/users'">
+              <mat-icon>people</mat-icon>
+              <span>User Management</span>
+            </button>
+            
+            <button mat-menu-item [routerLink]="'/admin/auctions'">
+              <mat-icon>list_alt</mat-icon>
+              <span>Auction Management</span>
+            </button>
+          }
+          
+          <mat-divider></mat-divider>
+          
+          <!-- Logout Button -->
+          <button 
+            mat-menu-item 
+            (click)="onLogout()" 
+            class="logout-btn"
+            [disabled]="isLoading"
+          >
+            @if (isLoading) {
+              <div>
+                <mat-spinner diameter="20" class="logout-spinner"></mat-spinner>
+                <span>Logging out...</span>
+              </div>
+            } @else {
+              <div>
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+              </div>
+            }
+          </button>
+        </mat-menu>
+      </div>
+    }
+  </div>
+</mat-toolbar>
+
+<!-- Loading Overlay -->
+@if (isLoading && !userProfile) {
+  <div class="loading-overlay">
+    <mat-spinner diameter="50" color="accent"></mat-spinner>
+    <p>Loading session...</p>
+  </div>
+}
